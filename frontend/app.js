@@ -87,9 +87,9 @@ wolfgames.config(['$routeProvider', '$locationProvider',
                         }
 
                         if (Object.keys(params).length > 0) {
-                            data = await services.get('shop', 'products', { filters: params, offset: page, search: search });
+                            data = await services.post('shop', 'products', { filters: params, offset: page, search: search });
                         } else {
-                            data = await services.get('shop', 'products', { offset: 0 });
+                            data = await services.post('shop', 'products', { offset: 0 });
                         }
                         if (Object.keys(data.games).length <= 0) {
                             return null;
@@ -110,7 +110,7 @@ wolfgames.config(['$routeProvider', '$locationProvider',
                 controller: "controller_shopDetails",
                 resolve: {
                     game: async function (services, $route) {
-                        data = await services.get('shop', 'details', { gameCod: $route.current.params.gameCod })
+                        data = await services.get('shop', 'details_product', $route.current.params.gameCod);
                         return data;
                     }/*,
                     favs: function (services) {

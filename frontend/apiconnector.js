@@ -1,45 +1,40 @@
 wolfgames.factory("services", ['$http', '$q', function ($http, $q) {
-    let serviceBase = '/angularjs_php/backend/module/';
+    let serviceBase = '/angularjs_fphp/api';
     let obj = {};
-
-    obj.get = function (module, functi, data = {}) {
+    
+    obj.get = function (module, action, data = null) {
         var defered = $q.defer();
         var promise = defered.promise;
-        var params = "";
-        for (var i in data){
-            var str = "";
-            if (typeof data[i] === 'object') {
-                str = JSON.stringify(data[i]);
-            } else {
-                str = data[i];
-            }
-            params += "&"+i+"="+str;
-        }
+        
+        
         $http({
             method: 'GET',
-            url: serviceBase + module + '/controller' + '/controller_' + module + '.php' + '?op=' + functi + params
+            url: serviceBase + '/' + module + '/' + action + '/' + (data ? data : '')
         }).success(function (data, status, headers, config) {
-            defered.resolve(data);
+            console.log(data.content)
+            defered.resolve(data.content);
         }).error(function (data, status, headers, config) {
-            defered.reject(data);
+            defered.reject(data.error);
         });
         return promise;
     };
-
-    obj.post = function (module, option, data) {
+    //api/home/carousel
+    //data: data
+    obj.post = function (module, action, data = {}) {
         var defered = $q.defer();
         var promise = defered.promise;
+
         $http({
             method: 'POST',
-            url: serviceBase + module + '&op=' + option,
+            url: serviceBase + '/' + module + '/' + action,
             data: data
-        }).success(function (response, status, headers, config) {
-            defered.resolve(response);
-        }).error(function (error, status, headers, config) {
-            defered.reject(error);
+        }).success(function (data, status, headers, config) {
+            defered.resolve(data.content);
+        }).error(function (data, status, headers, config) {
+            defered.reject(data.error);
         });
         return promise;
-    };
+    }; 
 
     obj.put = function (module, functi, dada) {
         var defered = $q.defer();
