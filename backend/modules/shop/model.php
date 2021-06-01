@@ -1,5 +1,7 @@
 <?php
 
+use Utils\res;
+
 class ShopModel extends Model {
     function details_product($product){
         $sql = "SELECT * FROM games WHERE gameCod='$product'";
@@ -14,6 +16,7 @@ class ShopModel extends Model {
     }
 
     function select_products( $genres, $platformCod, $search, $offset) {			
+        
         //-------------[STARTING QUERIES]--------------\\
         $sqlGames = "SELECT DISTINCT g.*
                         FROM games g
@@ -34,7 +37,7 @@ class ShopModel extends Model {
         $sqlAdd = "";
 
         //-------------[ADDING TO QUERIES GENRES]--------------\\
-        if (!is_null($genres)) {
+        if (count($genres) > 0) {
             foreach ($genres as $i => $genre) {
                 if ($i != 0) {
                     $sqlAdd .= " AND ";
@@ -54,7 +57,7 @@ class ShopModel extends Model {
         //-------------[ADDING PLATFORM TO QUERIES]--------------\\
         if ($platformCod) {
             foreach ($platformCod as $i => $platform) {
-                if ($i != 0 || !is_null($genres)) {
+                if ($i != 0 || count($genres) > 0) {
                     $sqlAdd .= " AND ";
                 } else {
                     $sqlAdd .= " WHERE ";
@@ -78,7 +81,7 @@ class ShopModel extends Model {
 
         //-------------[ADDING SEARCH TO QUERIES]--------------\\
         if ($search) {
-            if (!is_null($genres) || !is_null($platformCod)) {
+            if (count($genres) > 0 || count($platformCod) > 0) {
                 $sqlGames .= " AND";
                 $sqlGenres .= " AND";
                 $sqlTotalG .= " AND";
@@ -112,6 +115,7 @@ class ShopModel extends Model {
         $sqlGenres .= " GROUP BY g.genreName";
         $sqlPlatforms .= " GROUP BY g.platformCod";
 
+        
         //-------------[STARTING CONEXION TO DO QUERIES]--------------\\
         $resT = $this->db->query($sqlTotalG)->query->fetch_all(MYSQLI_ASSOC);
         $resG = $this->db->query($sqlGames)->query->fetch_all(MYSQLI_ASSOC);

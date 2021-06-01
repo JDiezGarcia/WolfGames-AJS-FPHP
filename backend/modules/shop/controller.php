@@ -21,8 +21,8 @@ class ShopController extends Controller {
         or
         shop/products/{filters:{},offset:1,search}*/
         $products = $this->model->select_products(
-            $products->genres, 
-            $products->platformCod,
+            $products->filters['genres'], 
+            $products->filters['platforms'],
             $products->search, 
             $products->offset
         );

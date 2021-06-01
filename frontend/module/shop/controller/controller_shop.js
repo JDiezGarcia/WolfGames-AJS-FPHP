@@ -1,4 +1,4 @@
-wolfgames.controller('controller_shop', function ($window, $scope, $routeParams, $route, services, games) {
+wolfgames.controller('controller_shop', function ($window, $scope, $routeParams, $route, services, games, CommonService) {
 
     //-----[VARS DECLARATIONS]-----\\
     var arrGames = games.games;
@@ -8,6 +8,7 @@ wolfgames.controller('controller_shop', function ($window, $scope, $routeParams,
     var allGenres = games.allGenres;
     var allPlatforms = games.allPlatforms;
 
+    console.log(games)
     //----------[DATA INJECTION]----------\\
     $scope.arrGames = arrGames;
     $scope.arrPlatforms = arrPlatforms;
@@ -128,5 +129,18 @@ wolfgames.controller('controller_shop', function ($window, $scope, $routeParams,
     //----------[PAGE REDIRECTION]-----------\\
     $scope.redirectShopDetails = function (game) {
         location.href = "#/shop/details/" + game;
+    };
+
+    $scope.openModal = function (gameCod) {
+        CommonService.openModal(chip,'adoptions','details_list');
+    };
+});
+
+wolfgames.controller('details_controller', function ($scope,game,$uibModalInstance) {
+    
+    $scope.data = game[0];
+
+    $scope.close = function () {
+        $uibModalInstance.dismiss('cancel');
     };
 });

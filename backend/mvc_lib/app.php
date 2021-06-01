@@ -43,7 +43,7 @@ class App {
         } catch(BadReqException $e) {
             res::error($e->getMessage());
         } catch(Exception $e) {
-            res::error($e->getMessage(), 500);
+            res::error($e->getMessage() . '\n' . $e->getTraceAsString(), 500);
         }
     }
 

@@ -51,28 +51,36 @@
                     <div class="container" id="search-container" style="width: 300px">
                         <div class="row g-0" style="width: inherit;">
                             <div class="input-group">
-                                <input ng-keyup="$event.keyCode !== 13 && searchBar()" class="form-control" id="search-bar" type="text"
-                                    placeholder="Search" aria-label="Search" autocomplete="off" ng-model="$root.searchQuery" ng-keydown="$event.keyCode === 13 && $root.noMatch === false && redirectSearchList()">
+                                <input ng-keyup="$event.keyCode !== 13 && searchBar()" class="form-control"
+                                    id="search-bar" type="text" placeholder="Search" aria-label="Search"
+                                    autocomplete="off" ng-model="$root.searchQuery"
+                                    ng-keydown="$event.keyCode === 13 && $root.noMatch === false && redirectSearchList()">
                                 <button class="btn btn-outline-success" id="search-button" type="button"
-                                    data-tr="search"><i class="fa fa-search" aria-hidden="true" ng-click="$root.noMatch === false && redirectSearchList()"></i></button>
+                                    data-tr="search"><i class="fa fa-search" aria-hidden="true"
+                                        ng-click="$root.noMatch === false && redirectSearchList()"></i></button>
                             </div>
                         </div>
                         <div class="card overflow-auto" id="searched-items"
-                            style="width: inherit; max-height: 300px; position: absolute; z-index: 5; " ng-hide="$root.noQuery == true">
+                            style="width: inherit; max-height: 300px; position: absolute; z-index: 5; "
+                            ng-hide="$root.noQuery == true">
                             <span ng-if="$root.noMatch == true">No hay resultados de la busqueda</span>
                             <ul class="list-group list-group-flush" ng-if="$root.noMatch == false">
-                                <li ng-repeat="searchGame in $root.searchGames" class="list-group-item" ng-click="redirectSearchOne(searchGame.gameCod)">
+                                <li ng-repeat="searchGame in $root.searchGames" class="list-group-item"
+                                    ng-click="redirectSearchOne(searchGame.gameCod)">
                                     <div id="{{searchGame.gameCod}}">
                                         <div class="row">
                                             <div class="col-4">
-                                                <img style="width:100%" ng-src="/angularjs_php/frontend/view/img/games/{{searchGame.gameImg}}">
+                                                <img style="width:100%"
+                                                    ng-src="/angularjs_php/frontend/view/img/games/{{searchGame.gameImg}}">
                                             </div>
                                             <div class="col-8">
                                                 <div class="row">
-                                                    <div style="font-size:18px;" class="col">{{searchGame.gameName}}</div>
+                                                    <div style="font-size:18px;" class="col">{{searchGame.gameName}}
+                                                    </div>
                                                 </div>
                                                 <div class="row">
-                                                    <div style="font-weight: bold;" class="col">{{searchGame.price}}€</div>
+                                                    <div style="font-weight: bold;" class="col">{{searchGame.price}}€
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -85,8 +93,7 @@
             </div>
 
             <div class="navbar-buttons btn-group">
-                <button class="login btn btn-outline-success" id="navbar-login" data-bs-toggle="modal"
-                    data-bs-target="#log-modal">
+                <button class="login btn btn-outline-success" id="navbar-login" ng-click="openModal($root.actionLog)">
 
                 </button>
 
@@ -98,13 +105,5 @@
             </div>
 
         </div>
-    </div>
-
-    <div class="modal fade" id="log-modal" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="true">
-
-    </div>
-
-    <div class="modal fade" id="register-modal" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="true">
-
     </div>
 </nav>

@@ -9,7 +9,7 @@ wolfgames.factory("services", ['$http', '$q', function ($http, $q) {
         
         $http({
             method: 'GET',
-            url: serviceBase + '/' + module + '/' + action + '/' + (data ? data : '')
+            url: serviceBase + '/' + module + '/' + action + (data ? '/' + data : '')
         }).success(function (data, status, headers, config) {
             console.log(data.content)
             defered.resolve(data.content);
@@ -23,7 +23,7 @@ wolfgames.factory("services", ['$http', '$q', function ($http, $q) {
     obj.post = function (module, action, data = {}) {
         var defered = $q.defer();
         var promise = defered.promise;
-
+        
         $http({
             method: 'POST',
             url: serviceBase + '/' + module + '/' + action,
