@@ -1,7 +1,7 @@
 var wolfgames = angular.module('wolfgames', ['ngRoute', 'ngAnimate', 'ngTouch', 'ngSanitize', 'toastr', 'ui.bootstrap', 'ngAria']);
 //----- TRADUCTION I18N -----\\
 //--- http://jsfiddle.net/arleray/pmbyst0n/ ---\\
-wolfgames.run(function ($rootScope, $window, services, $modal) {
+wolfgames.run(function ($rootScope, $window, services) {
 
     //---------[SEARCH-BAR]---------\\
     $rootScope.searchBar = function () {
@@ -53,10 +53,7 @@ wolfgames.run(function ($rootScope, $window, services, $modal) {
             break;
           ;
         }
-        $modal.openModal({
-          templateUrl: 'frontend/module/'+ module + '/view/' + templateHtml ,
-          controller: 'controller_'+ module
-        });
+        
       };
 });
 

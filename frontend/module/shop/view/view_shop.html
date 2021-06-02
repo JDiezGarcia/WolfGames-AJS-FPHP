@@ -38,7 +38,7 @@
                     <div class="col-3 product-shop" ng-repeat="game in arrGames">
                         <div class="card p-3" id="{{game.gameCode}}">
                             <div>
-                                <img ng-src="/angularjs_php/frontend/view/img/games/{{game.gameImg}}" width="100%" />
+                                <img ng-src="/angularjs_php/frontend/view/img/games/{{game.gameImg}}" width="100%" ng-click="redirectShopDetails('{{game.gameCod}}')"/>
                                 <div class="product-details" id="{{game.gameCod}}">
                                     <span class="fw-bold d-block game-name"
                                         style="display:inline-block">{{game.gameName}}</span>
@@ -48,7 +48,7 @@
                                     <div class="buttons d-flex flex-row">
                                         <div class="cart"><i class="fa fa-shopping-cart"></i></div>
                                         <button class="btn btn-success cart-button btn-block" id="{{game.gameCod}}"
-                                            data-tr="view" ng-click="redirectShopDetails('{{game.gameCod}}')">View<span class="dot"></span></button>
+                                            data-tr="view" ng-click="openModal('{{game.gameCod}}')">View<span class="dot"></span></button>
                                     </div>
                                     <div class="weight"> <small>{{game.description}}</small></div>
                                 </div>

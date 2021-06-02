@@ -15,6 +15,7 @@ class ShopController extends Controller {
         $product_details = $this->model->details_product(Client::$uri[2]);
         res::ok($product_details);
     }
+    
     // ACCION /shop/products/
     public function products_post($products) {
         /*products_post($generes, $platformCod, $search,  $offset)
