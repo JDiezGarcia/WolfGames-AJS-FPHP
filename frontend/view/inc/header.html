@@ -2,7 +2,7 @@
     <div class="container-fluid">
 
         <a class="navbar-brand" href="#/home">
-            <h1><img src="/jquery_php/view/img/logo.png" alt="logo"></h1>
+            <h1><img src="/angularjs_fphp/frontend/view/img/logo.png" alt="logo"></h1>
         </a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -93,8 +93,17 @@
             </div>
 
             <div class="navbar-buttons btn-group">
-                <button class="login btn btn-outline-success" id="navbar-login" ng-click="openModal($root.actionLog)">
-
+                <button class="login btn btn-outline-success" id="navbar-login" ng-click="openLogModal()">
+                    <span ng-show="$root.user == null">
+                        <i class="fa fa-user-o" id="login-icon">
+                            <span data-tr="login">Login</span>
+                        </i>
+                    </span>
+                    <span>
+                        <div ng-show="$root.user" class="{{user.user}}" id="login-icon"><img style="max-width: 30px;"
+                                src="/angularjs_fphp/frontend/view/img/user/{{user.img}}`" /><span>{{user.user}}</span>
+                        </div>
+                    </span>
                 </button>
 
                 <button class="shopping-cart btn btn-outline-success" id="navbar-shopping-cart">

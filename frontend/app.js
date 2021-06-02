@@ -1,13 +1,13 @@
 var wolfgames = angular.module('wolfgames', ['ngRoute', 'ngAnimate', 'ngTouch', 'ngSanitize', 'toastr', 'ui.bootstrap', 'ngAria']);
 //----- TRADUCTION I18N -----\\
 //--- http://jsfiddle.net/arleray/pmbyst0n/ ---\\
-wolfgames.run(function ($rootScope, $window, services) {
+wolfgames.run(function ($rootScope, $window, services, CommonService) {
 
     //---------[SEARCH-BAR]---------\\
     $rootScope.searchBar = function () {
         let query = encodeURIComponent($rootScope.searchQuery);
         if ($rootScope.searchQuery.length > 0) {
-            services.get('search', 'search_bar', query )
+            services.get('search', 'search_bar', query)
                 .then(function (games) {
                     $rootScope.noQuery = false;
                     if (typeof games == 'object') {
@@ -28,9 +28,9 @@ wolfgames.run(function ($rootScope, $window, services) {
     };
 
     $rootScope.redirectSearchList = function () {
-        if(!$rootScope.searchQuery){
+        if (!$rootScope.searchQuery) {
             location.href = "#/shop";
-        }else{
+        } else {
             let query = encodeURIComponent($rootScope.searchQuery);
             delete $rootScope.searchQuery;
             delete $rootScope.searchGames;
@@ -41,20 +41,20 @@ wolfgames.run(function ($rootScope, $window, services) {
     $rootScope.redirectSearchOne = function (game) {
         delete $rootScope.searchQuery;
         delete $rootScope.searchGames;
-        location.href = "#/shop/details/"+game;
+        location.href = "#/shop/details/" + game;
     };
 
     //----------[MODALS]----------\\
-    $rootScope.openModal = function(action, module) {
-        let templateHtml = '';
-        switch(action){
-          case 'login':
-            templateHtml = 'login.html';
-            break;
-          ;
+    $rootScope.openLogModal = function () {
+        console.log("s")
+        if(localStorage.tokenSession){
+            console.log("a")
+            CommonService.openModal('null', 'log', 'logout', 'controller_logout');
+        }else{
+            console.log("v")
+            CommonService.openModal('null', 'log', 'login', 'controller_login');
         }
-        
-      };
+    };
 });
 
 wolfgames.config(['$routeProvider', '$locationProvider',
@@ -65,7 +65,7 @@ wolfgames.config(['$routeProvider', '$locationProvider',
                 controller: "controller_home",
                 resolve: {
                     viewedGames: async function (services) {
-                        data = await services.get('home', 'carousel', 0 );
+                        data = await services.get('home', 'carousel', 0);
                         return data;
                     },
                     allPlatforms: function (services) {
@@ -92,7 +92,7 @@ wolfgames.config(['$routeProvider', '$locationProvider',
                         } else {
                             page = (page - 1) * 8;
                         }
-                        
+
                         if (search) {
                             search = encodeURIComponent(search);
                         }

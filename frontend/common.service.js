@@ -9,6 +9,7 @@ wolfgames.factory("CommonService", ['services', '$uibModal', function (services,
     function openModal(data, module, funct, ctrl) {
 
         let resolv;
+        let templ;
         switch (module) {
             case 'shop':
                 templ = 'view_' + module + 'Modal.html',
@@ -25,11 +26,12 @@ wolfgames.factory("CommonService", ['services', '$uibModal', function (services,
         };
 
         var modalInstance = $uibModal.open({
-            animation: 'true',
+            animation: false,
+            backdropClass: "grey-backdrop",
             templateUrl: 'frontend/module/' + module + '/view/'+ templ,
             controller: ctrl,
             windowClass: 'show',
-            size: "lg",
+            size: "md",
             resolve: resolv
         });
     }

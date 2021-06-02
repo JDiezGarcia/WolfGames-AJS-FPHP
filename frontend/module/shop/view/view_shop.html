@@ -46,7 +46,7 @@
                                             class="detail">{{game.price}}€</span></span><br>
                                     <span data-tr="pgi"></span><span>PGI: <span class="detail">{{game.pgi}}</span></span>
                                     <div class="buttons d-flex flex-row">
-                                        <div class="cart"><i class="fa fa-shopping-cart"></i></div>
+                                        <div class="cart"><i ng-click="openModal()" class="fa fa-shopping-cart"></i></div>
                                         <button class="btn btn-success cart-button btn-block" id="{{game.gameCod}}"
                                             data-tr="view" ng-click="openModal('{{game.gameCod}}')">View<span class="dot"></span></button>
                                     </div>

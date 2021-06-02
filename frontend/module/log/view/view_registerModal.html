@@ -3,41 +3,91 @@
 </div>
 <div class="modal-body">
     <div class="form-title text-center">
-        <h4 data-tr="login"></h4>
+        <h4 data-tr="register">REGISTER</h4>
     </div>
     <div class="d-flex flex-column text-center">
         <form>
-            <div class="form-group">
-                <input type="user" class="form-control" id="user-email-log" placeholder="user/email@email.com">
-            </div>
-            <div class="form-group">
-                <input type="password" class="form-control" id="password-log" placeholder="Password">
-            </div>
-            <button type="button" class="btn btn-info btn-block btn-round" id="log-success-button"
-                data-tr="login"></button>
-        </form>
 
-        <div class="text-center text-muted delimiter" data-tr="social-log"></div>
-        <div class="d-flex justify-content-center social-buttons">
-            <button type="button" class="btn btn-secondary btn-round" data-toggle="tooltip" data-placement="top"
-                title="Twitter">
-                <i class="fa fa-twitter"></i>
-            </button>
-            <button type="button" class="btn btn-secondary btn-round" data-toggle="tooltip" data-placement="top"
-                title="Facebook">
-                <i class="fa fa-facebook"></i>
-            </button>
-            <button type="button" class="btn btn-secondary btn-round" data-toggle="tooltip" data-placement="top"
-                title="Linkedin">
-                <i class="fa fa-linkedin"></i>
-            </button>
-        </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <i class="fa fa-user input-group-text"></i>
+                </div>
+                <input id="username" type="text" class="form-control" placeholder="Username" aria-label="Username">
+            </div>
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <i class="fa fa-envelope input-group-text"></i>
+                </div>
+                <input id="user-email" type="text" placeholder="Email Address" class="form-control">
+            </div>
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <i class="fa fa-lock input-group-text"></i>
+                </div>
+                <input id="user-pass1" type="password" placeholder="Password" class="form-control">
+                <input id="user-pass2" type="password" placeholder="Confirm Password" class="form-control">
+            </div>
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <i class="fa fa-id-badge input-group-text"></i>
+                </div>
+                <input id="user-name" type="text" placeholder="First Name" class="form-control">
+                <input id="user-lastname" type="text" placeholder="Last Name" class="form-control">
+            </div>
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <i class="fa fa-transgender input-group-text"></i>
+                </div>
+                <select name="gender" id="user-gender" class="form-control">
+                    <option value="" disabled="" selected="">Gender</option>
+                    <option value="male">Male</option>
+                    <option value="femal">Female</option>
+                    <option value="other">Other</option>
+                </select>
+                <div class="input-group-prepend">
+                    <i class="fa fa-calendar input-group-text"></i>
+                </div>
+                <input id="user-birthday" type="date" class="form-control" name="trip-start" placeholder="yyyy-mm-dd"
+                    min="1900-01-01">
+            </div>
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <i class="fa fa-home input-group-text"></i>
+                </div>
+                <input id="user-dir" type="text" placeholder="Direction" class="form-control">
+                <div class="input-group-prepend">
+                    <i class="fa fa-flag input-group-text"></i>
+                </div>
+                <input id="user-country" type="text" style="max-width: 140px" placeholder="Country"
+                    class="form-control">
+            </div>
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <i class="fa fa-building input-group-text"></i>
+                </div>
+                <input id="user-city" type="text" placeholder="City" class="form-control">
+                <div class="input-group-prepend">
+                    <i class="fa fa-inbox input-group-text"></i>
+                </div>
+                <input id="user-postcode" type="text" placeholder="Post-Code" class="form-control">
+
+            </div>
+
+            <button type="button" class="btn btn-info btn-block btn-round" id="sign-success-button"
+                data-tr="register">Register</button>
+        </form>
     </div>
 </div>
 <div class="modal-footer d-flex justify-content-center">
-    <div class="signup-section">
-        <span data-tr="login-section"></span>
-        <a class="text-info" id="sign-log" ng-click="closeModal() && openModal()" data-bs-dismiss="modal" data-bs-toggle="modal"
-            data-bs-target="#register-modal" style="cursor:pointer;" data-tr="sign-up"></a>.
+    <div class="login-section">
+        <span data-tr="register-section">Are you a member?</span>
+        <a class="text-info" id="log-section" data-bs-dismiss="modal"
+            style="cursor:pointer;" data-tr="log-in" ng-click="closeModal(); openLogModal()">Login</a>.
     </div>
 </div>
