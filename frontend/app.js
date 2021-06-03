@@ -1,8 +1,7 @@
-var wolfgames = angular.module('wolfgames', ['ngRoute', 'ngAnimate', 'ngTouch', 'ngSanitize', 'toastr', 'ui.bootstrap', 'ngAria']);
+var wolfgames = angular.module('wolfgames', ['ngRoute', 'ngAnimate', 'ngTouch', 'ngSanitize', 'toastr', 'ui.bootstrap', 'ngAria', 'ngMessages']);
 //----- TRADUCTION I18N -----\\
 //--- http://jsfiddle.net/arleray/pmbyst0n/ ---\\
-wolfgames.run(function ($rootScope, $window, services, CommonService) {
-
+wolfgames.run(function ($rootScope, $window, services, CommonService, toastr) {
     //---------[SEARCH-BAR]---------\\
     $rootScope.searchBar = function () {
         let query = encodeURIComponent($rootScope.searchQuery);
@@ -46,15 +45,17 @@ wolfgames.run(function ($rootScope, $window, services, CommonService) {
 
     //----------[MODALS]----------\\
     $rootScope.openLogModal = function () {
-        console.log("s")
         if(localStorage.tokenSession){
-            console.log("a")
             CommonService.openModal('null', 'log', 'logout', 'controller_logout');
         }else{
-            console.log("v")
             CommonService.openModal('null', 'log', 'login', 'controller_login');
         }
     };
+
+    //----------[SESSION]-----------\\
+    if(localStorage.tokenSession){
+        $rootScope.userProfile = JSON.parse(localStorage.dataSession);
+    }
 });
 
 wolfgames.config(['$routeProvider', '$locationProvider',

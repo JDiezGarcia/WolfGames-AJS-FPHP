@@ -1,13 +1,13 @@
 <div class="modal-header border-bottom-0">
-    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" ng-click="closeModal()" aria-label="Close"></button>
 </div>
 <div class="modal-body">
     <div class="form-title text-center">
-        <h4 data-tr="logout"></h4>
+        <h4 data-tr="logout">LOGOUT</h4>
         <br />
-        <p data-tr="close-session"></p>
-        <button type="button" class="btn btn-info btn-block btn-round" id="log-success-button" data-tr="yes"></button>
-        <button type="button" class="btn btn-info btn-block btn-round" id="log-close-button" data-bs-dismiss="modal"
-            aria-label="Close" data-tr="no"></button>
+        <p data-tr="close-session">Do you want to close Session?</p>
+        <button type="button" class="btn btn-info btn-block btn-round" id="log-success-button" ng-click="logout()" data-tr="yes">Yes</button>
+        <button type="button" class="btn btn-info btn-block btn-round" id="log-close-button" ng-click="closeModal()" data-bs-dismiss="modal"
+            aria-label="Close" data-tr="no">No</button>
     </div>
 </div>

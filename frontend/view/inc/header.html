@@ -94,14 +94,14 @@
 
             <div class="navbar-buttons btn-group">
                 <button class="login btn btn-outline-success" id="navbar-login" ng-click="openLogModal()">
-                    <span ng-show="$root.user == null">
+                    <span ng-show="userProfile == null">
                         <i class="fa fa-user-o" id="login-icon">
                             <span data-tr="login">Login</span>
                         </i>
                     </span>
                     <span>
-                        <div ng-show="$root.user" class="{{user.user}}" id="login-icon"><img style="max-width: 30px;"
-                                src="/angularjs_fphp/frontend/view/img/user/{{user.img}}`" /><span>{{user.user}}</span>
+                        <div ng-show="userProfile != null" class="{{userProfile.user}}" id="login-icon"><img style="max-width: 30px;"
+                                src="/angularjs_fphp/frontend/view/img/user/{{userProfile.img}}" /><span>{{userProfile.user}}</span>
                         </div>
                     </span>
                 </button>

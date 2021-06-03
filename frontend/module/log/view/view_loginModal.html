@@ -6,37 +6,70 @@
         <h4 data-tr="login">LOGIN</h4>
     </div>
     <div class="d-flex flex-column text-center">
+        <!--LOGIN-FORM-->
         <form name="loginForm">
+            <!--USERNAME-->
             <div class="form-group">
-                <input type="user" name="user" class="form-control" ng-pattern = "regUser" id="user-email-log" placeholder="user/email@email.com">
-            </div>
-            <div class="form-group">
-                <input type="password" name="password" ng-pattern = "regPass" class="form-control" id="password-log" placeholder="Password">
-            </div>
-            <button type="button" class="btn btn-info btn-block btn-round" id="log-success-button"
-                data-tr="login" ng-disabled = "loginForm.user.$invalid || loginForm.password.$invalid" type="submit" ng-click="login()">Login</button>
-        </form>
+                <h6 id="input-username" style="text-align: left;">Username/Email:</h6>
 
-        <div class="text-center text-muted delimiter" data-tr="social-log"></div>
+                <!--INPUT-->
+                <span class="item item-input">
+                    <input type="user" class="form-control" ng-model="user" placeholder="user/email@email.com"
+                        name="user" ng-minlength="4" ng-maxlength="20" ng-pattern="regEmail || regUser" required
+                        ng-class="{'invalid-input': loginForm.user.$dirty && loginForm.user.$invalid }">
+                </span>
+
+                <!--VALIDATION-->
+                <div class="text-danger" role="alert" class="error-message" ng-messages="loginForm.user.$error"
+                    ng-show="loginForm.user.$dirty">
+                    <p ng-message="required">This field is required</p>
+                    <p ng-message="pattern">The field is invalid need to be a user or email</p>
+                    <p ng-message="minlength">This field needs to be min 4 characters</p>
+                    <p ng-message="maxlength">This field need to be max 20 characters</p>
+                </div>
+            </div>
+            <br/>
+            <!--PASSWORD-->
+            <div class="form-group">
+                <h6 id="input-password" style="text-align: left;">Password:</h6>
+                <!--INPUT-->
+                <span class="item item-input">
+                    <input type="password" class="form-control" ng-model="password" placeholder="Password"
+                        name="password" ng-minlength="4" ng-maxlength="20" ng-pattern="regPass" required
+                        ng-class="{'invalid-input': loginForm.password.$dirty && loginForm.password.$invalid }">
+                </span>
+
+                <!--VALIDATION-->
+                <div class="text-danger" role="alert" class="error-message" ng-messages="loginForm.password.$error"
+                    ng-show="loginForm.password.$dirty">
+                    <p ng-message="required">This field is required</p>
+                    <p ng-message="pattern">You need lowercase, uppercase, numbers and special characters</p>
+                    <p ng-message="minlength">This field needs to be min 4 characters</p>
+                    <p ng-message="maxlength">This field need to be max 20 characters</p>
+                </div>
+            </div>
+            <br/>
+            <!--SUBMIT-->
+            <button type="button" class="btn btn-info btn-block btn-round" id="log-success-button" data-tr="login"
+                ng-disabled="loginForm.user.$invalid || loginForm.password.$invalid" type="submit"
+                ng-click="login()">Login</button>
+        </form>
+        <!--SOCIAL-LOGIN-->
+        <div class="text-center text-muted delimiter" data-tr="social-log">Social Login</div>
         <div class="d-flex justify-content-center social-buttons">
-            <button type="button" class="btn btn-secondary btn-round" data-toggle="tooltip" data-placement="top"
-                title="Twitter">
-                <i class="fa fa-twitter"></i>
+            <button type="button" class="btn btn-secondary btn-round" data-placement="top" title="Github">
+                <i class="fa fa-github"></i>
             </button>
-            <button type="button" class="btn btn-secondary btn-round" data-toggle="tooltip" data-placement="top"
-                title="Facebook">
-                <i class="fa fa-facebook"></i>
-            </button>
-            <button type="button" class="btn btn-secondary btn-round" data-toggle="tooltip" data-placement="top"
-                title="Linkedin">
-                <i class="fa fa-linkedin"></i>
+            <button type="button" class="btn btn-secondary btn-round" data-placement="top" title="Google">
+                <i class="fa fa-google"></i>
             </button>
         </div>
     </div>
 </div>
 <div class="modal-footer d-flex justify-content-center">
     <div class="signup-section">
-        <span data-tr="login-section">Are you a member ye?</span>
-        <a class="text-info" id="sign-log" data-bs-dismiss="modal" ng-click="closeModal(); openLogModal()" style="cursor:pointer;" data-tr="sign-up">Sign Up</a>.
+        <span data-tr="login-section">Are you a member yet?</span>
+        <a class="text-info" id="sign-log" data-bs-dismiss="modal" ng-click="closeModal(); openLogModal()"
+            style="cursor:pointer;" data-tr="sign-up">Sign Up</a>.
     </div>
 </div>
