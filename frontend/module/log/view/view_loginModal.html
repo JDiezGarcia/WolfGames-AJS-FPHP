@@ -10,15 +10,15 @@
         <form name="loginForm">
             <!--USERNAME-->
             <div class="form-group">
-                <h6 id="input-username" style="text-align: left;">Username/Email:</h6>
-
                 <!--INPUT-->
-                <span class="item item-input">
-                    <input type="user" class="form-control" ng-model="user" placeholder="user/email@email.com"
-                        name="user" ng-minlength="4" ng-maxlength="20" ng-pattern="regEmail || regUser" required
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <i class="fa fa-user input-group-text"></i>
+                    </div>
+                    <input type="user" class="form-control" ng-model="user" placeholder="Username/email@email.com"
+                        name="user" ng-minlength="4" ng-maxlength="20" ng-pattern="regUser" required
                         ng-class="{'invalid-input': loginForm.user.$dirty && loginForm.user.$invalid }">
-                </span>
-
+                </div>
                 <!--VALIDATION-->
                 <div class="text-danger" role="alert" class="error-message" ng-messages="loginForm.user.$error"
                     ng-show="loginForm.user.$dirty">
@@ -28,16 +28,16 @@
                     <p ng-message="maxlength">This field need to be max 20 characters</p>
                 </div>
             </div>
-            <br/>
             <!--PASSWORD-->
             <div class="form-group">
-                <h6 id="input-password" style="text-align: left;">Password:</h6>
-                <!--INPUT-->
-                <span class="item item-input">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <i class="fa fa-lock input-group-text"></i>
+                    </div>
                     <input type="password" class="form-control" ng-model="password" placeholder="Password"
                         name="password" ng-minlength="4" ng-maxlength="20" ng-pattern="regPass" required
                         ng-class="{'invalid-input': loginForm.password.$dirty && loginForm.password.$invalid }">
-                </span>
+                </div>
 
                 <!--VALIDATION-->
                 <div class="text-danger" role="alert" class="error-message" ng-messages="loginForm.password.$error"
@@ -48,10 +48,9 @@
                     <p ng-message="maxlength">This field need to be max 20 characters</p>
                 </div>
             </div>
-            <br/>
             <!--SUBMIT-->
             <button type="button" class="btn btn-info btn-block btn-round" id="log-success-button" data-tr="login"
-                ng-disabled="loginForm.user.$invalid || loginForm.password.$invalid" type="submit"
+                ng-disabled="loginForm.$invalid" type="submit"
                 ng-click="login()">Login</button>
         </form>
         <!--SOCIAL-LOGIN-->

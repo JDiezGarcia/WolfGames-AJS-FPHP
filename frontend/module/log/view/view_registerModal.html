@@ -6,53 +6,135 @@
         <h4 data-tr="register">REGISTER</h4>
     </div>
     <div class="d-flex flex-column text-center">
-        <form>
+        <form name="registerForm">
 
-            <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                    <i class="fa fa-user input-group-text"></i>
+            <div class="form-group">
+                <!--INPUT-->
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <i class="fa fa-user input-group-text"></i>
+                    </div>
+                    <input type="user" class="form-control" ng-model="user" placeholder="Username" name="user"
+                        ng-minlength="4" ng-maxlength="20" ng-pattern="regUser" required
+                        ng-class="{'invalid-input': registerForm.user.$dirty && registerForm.user.$invalid }">
                 </div>
-                <input id="username" type="text" class="form-control" placeholder="Username" aria-label="Username">
+                <!--VALIDATION-->
+                <div class="text-danger error-message" role="alert" ng-messages="registerForm.user.$error"
+                    ng-show="registerForm.user.$dirty">
+                    <p ng-message="required">This field is required</p>
+                    <p ng-message="pattern">The field is invalid</p>
+                    <p ng-message="minlength">This field needs to be min 4 characters</p>
+                    <p ng-message="maxlength">This field need to be max 20 characters</p>
+                </div>
             </div>
 
-            <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                    <i class="fa fa-envelope input-group-text"></i>
+            <div class="form-group">
+                <!--INPUT-->
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <i class="fa fa-envelope input-group-text"></i>
+                    </div>
+                    <input type="email" class="form-control" ng-model="email" placeholder="email@email.com" name="email"
+                        ng-minlength="7" ng-maxlength="50" ng-pattern="regEmail" required
+                        ng-class="{'invalid-input': registerForm.email.$dirty && registerForm.email.$invalid }">
                 </div>
-                <input id="user-email" type="text" placeholder="Email Address" class="form-control">
+                <!--VALIDATION-->
+                <div class="text-danger error-message" role="alert" ng-messages="registerForm.email.$error"
+                    ng-show="registerForm.email.$dirty">
+                    <p ng-message="required">This field is required</p>
+                    <p ng-message="pattern">The field is invalid need to be a email</p>
+                    <p ng-message="minlength">This field needs to be min 4 characters</p>
+                    <p ng-message="maxlength">This field need to be max 20 characters</p>
+                </div>
             </div>
 
-            <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                    <i class="fa fa-lock input-group-text"></i>
+            <div class="form-group">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <i class="fa fa-lock input-group-text"></i>
+                    </div>
+                    <input type="password" class="form-control" ng-model="password" placeholder="Password"
+                        name="password" ng-minlength="4" ng-maxlength="20" ng-pattern="regPass" required
+                        ng-class="{'invalid-input': registerForm.password.$dirty && registerForm.password.$invalid }">
+
+                    <input type="password" class="form-control" ng-model="rePassword" placeholder="Repeat Password"
+                        name="rePassword" ng-minlength="4" ng-maxlength="20" ng-pattern="regPass" required
+                        ng-change="setMatchError(registerForm.password, registerForm.rePassword)"
+                        ng-class="{'invalid-input': registerForm.rePassword.$dirty && registerForm.rePassword.$invalid }">
                 </div>
-                <input id="user-pass1" type="password" placeholder="Password" class="form-control">
-                <input id="user-pass2" type="password" placeholder="Confirm Password" class="form-control">
+
+                <!--VALIDATION-->
+                <div class="text-danger error-message" role="alert" ng-messages="registerForm.password.$error"
+                    ng-show="registerForm.password.$dirty">
+                    <p ng-message="required">This field is required</p>
+                    <p ng-message="pattern">You need lowercase, uppercase, numbers and special characters</p>
+                    <p ng-message="minlength">This field needs to be min 4 characters</p>
+                    <p ng-message="maxlength">This field need to be max 20 characters</p>
+                </div>
+                <div class="text-danger error-message" role="alert" ng-messages="registerForm.rePassword.$error"
+                    ng-show="registerForm.rePassword.$dirty">
+                    <p ng-message="required">This field is required</p>
+                    <p ng-message="pattern">You need lowercase, uppercase, numbers and special characters</p>
+                    <p ng-message="match">The passwords doesn't match</p>
+                    <p ng-message="minlength">This field needs to be min 4 characters</p>
+                    <p ng-message="maxlength">This field need to be max 20 characters</p>
+                </div>
             </div>
 
-            <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                    <i class="fa fa-id-badge input-group-text"></i>
+            <div class="form-group">
+                <!--INPUT-->
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <i class="fa fa-envelope input-group-text"></i>
+                    </div>
+                    <input type="text" class="form-control" ng-model="name" placeholder="First Name" name="name"
+                        ng-minlength="7" ng-maxlength="50" ng-pattern="regName" required
+                        ng-class="{'invalid-input': registerForm.name.$dirty && registerForm.name.$invalid }">
+
+                    <input type="text" class="form-control" ng-model="lastName" placeholder="Last Name" name="lastName"
+                        ng-minlength="7" ng-maxlength="50" ng-pattern="regName" required
+                        ng-class="{'invalid-input': registerForm.lastName.$dirty && registerForm.lastName.$invalid }">
                 </div>
-                <input id="user-name" type="text" placeholder="First Name" class="form-control">
-                <input id="user-lastname" type="text" placeholder="Last Name" class="form-control">
+                <!--VALIDATION-->
+                <div class="text-danger error-message" role="alert"
+                    ng-messages="registerForm.name.$error || registerForm.lastName.$error"
+                    ng-show="registerForm.name.$dirty || registerForm.lastName.$dirty">
+                    <p ng-message="required">This field is required</p>
+                    <p ng-message="pattern">The field is invalid</p>
+                    <p ng-message="minlength">This field needs to be min 4 characters</p>
+                    <p ng-message="maxlength">This field need to be max 20 characters</p>
+                </div>
             </div>
 
-            <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                    <i class="fa fa-transgender input-group-text"></i>
+            <div class="form-group">
+                <!--INPUT-->
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <i class="fa fa-transgender input-group-text"></i>
+                    </div>
+                    <select name="gender" ng-model="gender" ng-options="gender.name for gender in genders" required
+                        class="form-control" place>
+                        <option value="" disabled="" selected="">Gender</option>
+                        <option ng-repeat="gender in genders" value="{{gender.name}}">{{gender.name}}</option>
+                    </select>
+                    <div class="input-group-prepend">
+                        <i class="fa fa-calendar input-group-text"></i>
+                    </div>
+                    <input id="user-birthday" type="date" class="form-control" name="birth" ng-model="birth"
+                        placeholder="yyyy-mm-dd" required ng-min="1900-01-01" ng-max="{{maxDate | date:'yyyy-MM-dd'}}">
                 </div>
-                <select name="gender" id="user-gender" class="form-control">
-                    <option value="" disabled="" selected="">Gender</option>
-                    <option value="male">Male</option>
-                    <option value="femal">Female</option>
-                    <option value="other">Other</option>
-                </select>
-                <div class="input-group-prepend">
-                    <i class="fa fa-calendar input-group-text"></i>
-                </div>
-                <input id="user-birthday" type="date" class="form-control" name="trip-start" placeholder="yyyy-mm-dd"
-                    min="1900-01-01">
+
+            </div>
+            <!--VALIDATION-->
+            <div class="text-danger error-message" role="alert"ng-messages="registerForm.gender.$error" ng-if="registerForm.gender.$touched">
+                <p ng-message="required">The field is required</p>
+            </div>
+            <div class="text-danger error-message" role="alert"
+                ng-messages="registerForm.birth.$error"
+                ng-show="registerForm.birth.$dirty">
+                <p ng-message="required">This field is required</p>
+                <p ng-message="min">The date min date is 1900-01-01</p>
+                <p ng-message="max">The date min date is {{maxDate | date:'yyyy-MM-dd'}}</p>
             </div>
 
             <div class="input-group mb-3">
@@ -79,15 +161,16 @@
 
             </div>
 
-            <button type="button" class="btn btn-info btn-block btn-round" id="sign-success-button"
-                data-tr="register">Register</button>
+            <button type="button" class="btn btn-info btn-block btn-round" id="register-success-button"
+                data-tr="register" ng-disabled="registerForm.$invalid" type="submit"
+                ng-click="register()">Register</button>
         </form>
     </div>
 </div>
 <div class="modal-footer d-flex justify-content-center">
     <div class="login-section">
         <span data-tr="register-section">Are you a member?</span>
-        <a class="text-info" id="log-section" data-bs-dismiss="modal"
-            style="cursor:pointer;" data-tr="log-in" ng-click="closeModal(); openLogModal()">Login</a>.
+        <a class="text-info" id="log-section" data-bs-dismiss="modal" style="cursor:pointer;" data-tr="log-in"
+            ng-click="closeModal(); openLogModal()">Login</a>.
     </div>
 </div>
