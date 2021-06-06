@@ -35,7 +35,7 @@
                         <i class="fa fa-envelope input-group-text"></i>
                     </div>
                     <input type="email" class="form-control" ng-model="email" placeholder="email@email.com" name="email"
-                        ng-minlength="7" ng-maxlength="50" ng-pattern="regEmail" required
+                        ng-minlength="5" ng-maxlength="50" ng-pattern="regEmail" required
                         ng-class="{'invalid-input': registerForm.email.$dirty && registerForm.email.$invalid }">
                 </div>
                 <!--VALIDATION-->
@@ -43,8 +43,8 @@
                     ng-show="registerForm.email.$dirty">
                     <p ng-message="required">This field is required</p>
                     <p ng-message="pattern">The field is invalid need to be a email</p>
-                    <p ng-message="minlength">This field needs to be min 4 characters</p>
-                    <p ng-message="maxlength">This field need to be max 20 characters</p>
+                    <p ng-message="minlength">This field needs to be min 5 characters</p>
+                    <p ng-message="maxlength">This field need to be max 50 characters</p>
                 </div>
             </div>
 
@@ -88,11 +88,11 @@
                         <i class="fa fa-envelope input-group-text"></i>
                     </div>
                     <input type="text" class="form-control" ng-model="name" placeholder="First Name" name="name"
-                        ng-minlength="7" ng-maxlength="50" ng-pattern="regName" required
+                        ng-minlength="3" ng-maxlength="20" ng-pattern="regName" required
                         ng-class="{'invalid-input': registerForm.name.$dirty && registerForm.name.$invalid }">
 
                     <input type="text" class="form-control" ng-model="lastName" placeholder="Last Name" name="lastName"
-                        ng-minlength="7" ng-maxlength="50" ng-pattern="regName" required
+                        ng-minlength="3" ng-maxlength="20" ng-pattern="regName" required
                         ng-class="{'invalid-input': registerForm.lastName.$dirty && registerForm.lastName.$invalid }">
                 </div>
                 <!--VALIDATION-->
@@ -101,7 +101,7 @@
                     ng-show="registerForm.name.$dirty || registerForm.lastName.$dirty">
                     <p ng-message="required">This field is required</p>
                     <p ng-message="pattern">The field is invalid</p>
-                    <p ng-message="minlength">This field needs to be min 4 characters</p>
+                    <p ng-message="minlength">This field needs to be min 3 characters</p>
                     <p ng-message="maxlength">This field need to be max 20 characters</p>
                 </div>
             </div>
@@ -121,44 +121,87 @@
                         <i class="fa fa-calendar input-group-text"></i>
                     </div>
                     <input id="user-birthday" type="date" class="form-control" name="birth" ng-model="birth"
-                        placeholder="yyyy-mm-dd" required ng-min="1900-01-01" ng-max="{{maxDate | date:'yyyy-MM-dd'}}">
+                        placeholder="yyyy-mm-dd" required ng-min="{{minDate}}" ng-max="{{maxDate}}">
                 </div>
 
             </div>
             <!--VALIDATION-->
-            <div class="text-danger error-message" role="alert"ng-messages="registerForm.gender.$error" ng-if="registerForm.gender.$touched">
+            <div class="text-danger error-message" role="alert" ng-messages="registerForm.gender.$error"
+                ng-if="registerForm.gender.$touched">
                 <p ng-message="required">The field is required</p>
             </div>
-            <div class="text-danger error-message" role="alert"
-                ng-messages="registerForm.birth.$error"
+            <div class="text-danger error-message" role="alert" ng-messages="registerForm.birth.$error"
                 ng-show="registerForm.birth.$dirty">
                 <p ng-message="required">This field is required</p>
-                <p ng-message="min">The date min date is 1900-01-01</p>
+                <p ng-message="min">The date min date is {{minDate | date:'yyyy-MM-dd'}}</p>
                 <p ng-message="max">The date min date is {{maxDate | date:'yyyy-MM-dd'}}</p>
             </div>
 
-            <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                    <i class="fa fa-home input-group-text"></i>
+            <div class="form-group">
+                <!--INPUT-->
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <i class="fa fa-home input-group-text"></i>
+                    </div>
+                    <input type="text" class="form-control" ng-model="dir" placeholder="Address" name="dir"
+                        ng-minlength="10" ng-maxlength="50" ng-pattern="regDir" required
+                        ng-class="{'invalid-input': registerForm.dir.$dirty && registerForm.dir.$invalid }">
+
+                    <div class="input-group-prepend">
+                        <i class="fa fa-flag input-group-text"></i>
+                    </div>
+                    <input type="text" class="form-control" ng-model="country" placeholder="Country" name="country"
+                        ng-minlength="4" ng-maxlength="20" ng-pattern="regName" style="max-width: 140px" required
+                        ng-class="{'invalid-input': registerForm.country.$dirty && registerForm.country.$invalid }">
                 </div>
-                <input id="user-dir" type="text" placeholder="Direction" class="form-control">
-                <div class="input-group-prepend">
-                    <i class="fa fa-flag input-group-text"></i>
+                <!--VALIDATION-->
+                <div class="text-danger error-message" role="alert" ng-messages="registerForm.dir.$error"
+                    ng-show="registerForm.dir.$dirty">
+                    <p ng-message="required">This field is required</p>
+                    <p ng-message="pattern">The field is invalid</p>
+                    <p ng-message="minlength">This field needs to be min 10 characters</p>
+                    <p ng-message="maxlength">This field need to be max 50 characters</p>
                 </div>
-                <input id="user-country" type="text" style="max-width: 140px" placeholder="Country"
-                    class="form-control">
+                <div class="text-danger error-message" role="alert" ng-messages="registerForm.country.$error"
+                    ng-show="registerForm.country.$dirty">
+                    <p ng-message="required">This field is required</p>
+                    <p ng-message="pattern">The field is invalid</p>
+                    <p ng-message="minlength">This field needs to be min 4 characters</p>
+                    <p ng-message="maxlength">This field need to be max 20 characters</p>
+                </div>
             </div>
 
-            <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                    <i class="fa fa-building input-group-text"></i>
-                </div>
-                <input id="user-city" type="text" placeholder="City" class="form-control">
-                <div class="input-group-prepend">
-                    <i class="fa fa-inbox input-group-text"></i>
-                </div>
-                <input id="user-postcode" type="text" placeholder="Post-Code" class="form-control">
+            <div class="form-group">
+                <!--INPUT-->
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <i class="fa fa-building input-group-text"></i>
+                    </div>
+                    <input type="text" class="form-control" ng-model="city" placeholder="City" name="city"
+                        ng-minlength="4" ng-maxlength="20" ng-pattern="regName" required
+                        ng-class="{'invalid-input': registerForm.city.$dirty && registerForm.city.$invalid }">
 
+                    <div class="input-group-prepend">
+                        <i class="fa fa-inbox input-group-text"></i>
+                    </div>
+                    <input type="text" class="form-control" ng-model="postCode" placeholder="Post Code" name="postCode"
+                        ng-minlength="5" ng-maxlength="20" style="max-width: 140px" required
+                        ng-class="{'invalid-input': registerForm.postCode.$dirty && registerForm.postCode.$invalid }">
+                </div>
+                <!--VALIDATION-->
+                <div class="text-danger error-message" role="alert" ng-messages="registerForm.city.$error"
+                    ng-show="registerForm.city.$dirty">
+                    <p ng-message="required">This field is required</p>
+                    <p ng-message="pattern">The field is invalid</p>
+                    <p ng-message="minlength">This field needs to be min 4 characters</p>
+                    <p ng-message="maxlength">This field need to be max 20 characters</p>
+                </div>
+                <div class="text-danger error-message" role="alert" ng-messages="registerForm.postCode.$error"
+                    ng-show="registerForm.postCode.$dirty">
+                    <p ng-message="required">This field is required</p>
+                    <p ng-message="minlength">This field needs to be min 5 characters</p>
+                    <p ng-message="maxlength">This field need to be max 20 characters</p>
+                </div>
             </div>
 
             <button type="button" class="btn btn-info btn-block btn-round" id="register-success-button"

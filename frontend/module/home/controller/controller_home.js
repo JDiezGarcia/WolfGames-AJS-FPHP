@@ -20,7 +20,7 @@ wolfgames.controller('controller_home', function($scope, services, allPlatforms,
 
     //------------[PAGES CAROUSEL]-------------\\
     $scope.changeCarousel = function(offset) {
-        console.log(offset)
+
         offset = parseInt(offset);
         let oldOffset = parseInt(localStorage.carouselOffset);
         let newOffset = oldOffset;
@@ -42,7 +42,6 @@ wolfgames.controller('controller_home', function($scope, services, allPlatforms,
 
         localStorage.carouselOffset = newOffset;
         offset = newOffset * limit;
-        console.log(offset)
         services.get('home', 'carousel', offset )
         .then(function(games) {
             $scope.slides = games.games;

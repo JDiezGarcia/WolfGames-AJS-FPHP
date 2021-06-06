@@ -23,7 +23,7 @@ wolfgames.controller('controller_login', function ($window, $scope, $routeParams
         services.post('log', 'userLog', user)
             .then(function (data) {
                 if (data) {
-                    localStorage.tokenSession = data.user;
+                    localStorage.dataSession = JSON.stringify(data);
                     $rootScope.userProfile = data;
                     toastr.success('Welcome ' + data.user);
                     $scope.closeModal();
@@ -57,10 +57,8 @@ wolfgames.controller('controller_register', function ($scope, $uibModalInstance,
 
     $scope.setMatchError = function (pass, pass2) {
         if (pass.$viewValue != pass2.$viewValue) {
-            console.log(pass, pass2)
             pass2.$error.match = true;
         } else {
-            console.log("son iguales")
             delete pass2.$error['match'];
         }
     }
@@ -71,35 +69,44 @@ wolfgames.controller('controller_register', function ($scope, $uibModalInstance,
     ];
 
     $scope.maxDate = new Date();
+    $scope.minDate = new Date("1900-01-01");
 
-    let user = {
-        'username': $scope.user,
-        'email': $scope.email,
-        'password': CryptoJS.MD5($scope.password).toString(),
-        'name': $scope.name,
-        'lastName': $scope.lastName,
-        'dir': $scope.dir,
-        'postCode': $scope.postCode,
-        'city': $scope.city,
-        'country': $scope.country,
-        'sex': $scope.sex,
-        'birth': $scope.birth,
-    };
+    
     $scope.register = function () {
+        let date = $scope.birth;
+        let dd = (date.getDate() < 10 ? '0' : '') + date.getDate();
+        let MM = ((date.getMonth() + 1) < 10 ? '0' : '') + (date.getMonth() + 1);
+        let yyyy = date.getFullYear();
+        date = yyyy + "/" + MM + "/" + dd;
+        let user = {
+            'user': $scope.user,
+            'email': $scope.email,
+            'pass': CryptoJS.MD5($scope.password).toString(),
+            'name': $scope.name,
+            'lastName': $scope.lastName,
+            'dir': $scope.dir,
+            'postCode': $scope.postCode,
+            'city': $scope.city,
+            'country': $scope.country,
+            'sex': $scope.gender['name'],
+            'birth': date
+        };
         services.post('log', 'register', user)
             .then(function (data) {
-                if (data == 0) {
+                console.log(data);
+                if (data.result == 0) {
+                    $scope.closeModal();
                     toastr.success('We send you a mesage to verify your account.');
                 } else {
                     toastr.error("This account already exist.");
                 }
             }, function (error) {
-                console.log(error);
+                toastr.error(error);
             });
     };
 });
 
-wolfgames.controller('controller_logout', function ($scope, $uibModalInstance, $rootScope) {
+wolfgames.controller('controller_logout', function ($scope, $uibModalInstance, $rootScope, $cookies) {
 
 
     //-------[MODAl ACTIONS]-------\\
@@ -109,8 +116,8 @@ wolfgames.controller('controller_logout', function ($scope, $uibModalInstance, $
 
     //-------[LOGOUT SECTION]-------\\
     $scope.logout = function () {
-        delete localStorage.tokenSession;
-        delete localStorage.userType;
+        $cookies.remove('sessionToken', { path: '/' });
+        delete localStorage.dataSession;
         delete $rootScope.userProfile;
         $uibModalInstance.dismiss('cancel');
     }

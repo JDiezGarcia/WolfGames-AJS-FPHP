@@ -1,7 +1,7 @@
-var wolfgames = angular.module('wolfgames', ['ngRoute', 'ngAnimate', 'ngTouch', 'ngSanitize', 'toastr', 'ui.bootstrap', 'ngAria', 'ngMessages']);
+var wolfgames = angular.module('wolfgames', ['ngRoute', 'ngAnimate', 'ngTouch', 'ngSanitize', 'toastr', 'ui.bootstrap', 'ngAria', 'ngMessages','ngCookies']);
 //----- TRADUCTION I18N -----\\
 //--- http://jsfiddle.net/arleray/pmbyst0n/ ---\\
-wolfgames.run(function ($rootScope, $window, services, CommonService, toastr) {
+wolfgames.run(function ($rootScope, $window, services, CommonService, toastr, $cookies, $cookieStore) {
     //---------[SEARCH-BAR]---------\\
     $rootScope.searchBar = function () {
         let query = encodeURIComponent($rootScope.searchQuery);
@@ -45,7 +45,7 @@ wolfgames.run(function ($rootScope, $window, services, CommonService, toastr) {
 
     //----------[MODALS]----------\\
     $rootScope.openLogModal = function () {
-        if(localStorage.tokenSession){
+        if($cookies.get('sessionToken')){
             CommonService.openModal('null', 'log', 'logout', 'controller_logout');
         }else{
             CommonService.openModal('null', 'log', 'login', 'controller_login');
@@ -53,8 +53,11 @@ wolfgames.run(function ($rootScope, $window, services, CommonService, toastr) {
     };
 
     //----------[SESSION]-----------\\
-    if(localStorage.tokenSession){
+    if($cookies.get('sessionToken')){
         $rootScope.userProfile = JSON.parse(localStorage.dataSession);
+    }else{
+        delete localStorage.dataSession;
+        delete $rootScope.userProfile;
     }
 });
 

@@ -12,7 +12,7 @@ function array_to_obj($array, $obj, $prevent_xss = false) { // Simple array to o
                 $value = htmlentities($value);
             }
             try {
-                $obj->{$key} = $value;
+                $obj->{$key} = html_entity_decode($value);
             } catch(\TypeError $e) {
                 throw new \BadReqException("Invalid " . $key . " value");
             }
@@ -33,6 +33,11 @@ function get_method(){
     return $_SERVER['REQUEST_METHOD'];
 }
 
+function get_json_data($key) {
+    $json = json_decode(file_get_contents("../config.json"),true);
+    $key = $json[$key];
+    return $key;
+}
 //Da la respuesta al cliente
 class res {
     static function redirect($location) {
