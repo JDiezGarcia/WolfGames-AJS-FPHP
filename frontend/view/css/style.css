@@ -300,6 +300,17 @@ body {
 
 }
 
+.button-card{
+    background-color:#66A6DB!important;
+    border-color: grey!important;
+    margin: 1px;
+    width: 30%!important;
+    box-shadow: none!important;
+}
+
+.button-card:hover{
+    background-color:#2b89d6!important;
+}
 #search-container .card ul li:hover {
     background-color: #ededed;
 }
@@ -532,6 +543,7 @@ footer .fa-youtube:hover{
     color: white;
     border-color: grey;
     background-color: grey;
+    box-shadow: none;
 }
 
 #header button:hover{

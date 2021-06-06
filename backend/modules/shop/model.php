@@ -15,6 +15,24 @@ class ShopModel extends Model {
         return $res;
     }
 
+    function favs_products($userCod){
+        $sql = "SELECT * FROM games_favs WHERE userCod = '$userCod'";
+        $res = $this->db->query($sql)->query->fetch_all(MYSQLI_ASSOC);
+        return $res;
+    }
+
+    function fav_product($userCod, $gameCod){
+        $sql = "SELECT * FROM games_favs WHERE userCod = '$userCod' AND gameCod = '$gameCod'";
+        $res = $this->db->query($sql)->query->fetch_all(MYSQLI_ASSOC)[0];
+        return $res;
+    }
+
+    function favs_action_product($gameCod, $userCod){
+        $sql = "SELECT favsActions('$userCod','$gameCod') AS operation";
+        $res = $this->db->query($sql)->query->fetch_all(MYSQLI_ASSOC)[0];
+        return $res;
+    }
+
     function select_products( $genres, $platformCod, $search, $offset) {			
         
         //-------------[STARTING QUERIES]--------------\\

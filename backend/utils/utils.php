@@ -12,7 +12,11 @@ function array_to_obj($array, $obj, $prevent_xss = false) { // Simple array to o
                 $value = htmlentities($value);
             }
             try {
-                $obj->{$key} = html_entity_decode($value);
+                if(is_array($value)){
+                    $obj->{$key} = $value;
+                }else{
+                    $obj->{$key} = html_entity_decode($value);
+                };
             } catch(\TypeError $e) {
                 throw new \BadReqException("Invalid " . $key . " value");
             }
@@ -31,6 +35,10 @@ function is_post(){
 //tipo de metodo
 function get_method(){
     return $_SERVER['REQUEST_METHOD'];
+}
+
+function get_cookie($cookie) {
+    return $_COOKIE[$cookie];
 }
 
 function get_json_data($key) {

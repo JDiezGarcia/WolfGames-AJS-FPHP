@@ -6,7 +6,9 @@ class ShopController extends Controller {
 
     public $middlewares = array(
         "products_post" => array('json'),
-        "details_product_get" => array('json'),
+        "multi_fav_get" => array('token_expiration'),
+        "single_fav_get" => array('token_expiration'),
+        "fav_action_get" => array('token_expiration')
         //"action" => array('middleware(jwt,json..)
     );
 
@@ -22,14 +24,39 @@ class ShopController extends Controller {
         or
         shop/products/{filters:{},offset:1,search}*/
         $products = $this->model->select_products(
-            $products->filters['genres'], 
-            $products->filters['platforms'],
+            $products->genres, 
+            $products->platforms,
             $products->search, 
             $products->offset
         );
+        
         res::ok($products);
 
-    }  
+    }
+
+    public function multi_fav_get() {
+        $user = Client::$jwt_session->userCod;
+        $favorites = $this->model->favs_products($user);
+        res::ok($favorites);
+    }
+
+    public function single_fav_get() {
+        $user = Client::$jwt_session->userCod;
+        $favorites = $this->model->fav_product(
+            $user,
+            Client::$uri[2]
+        );
+        res::ok($favorites);
+    }
+    
+    public function fav_action_get() {
+        $user = Client::$jwt_session->userCod;
+        $favAction = $this->model->favs_action_product(
+            Client::$uri[2],
+            $user
+        );
+        res::ok($favAction);
+    }
 }
 
 ?>

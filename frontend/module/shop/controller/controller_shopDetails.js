@@ -1,5 +1,13 @@
-wolfgames.controller('controller_shopDetails', function($scope, game) {
+wolfgames.controller('controller_shopDetails', function($scope, game, fav, CommonService, $route) {
     $scope.data = game;
-    /*$scope.cart = services_shop.setArray(cart);
-    $scope.favs = services_shop.setArray(favs);*/
+    console.log(fav)
+    
+    if(fav){
+        $scope.data.fav = true;
+    }
+    $scope.fav = function (gameCod) {
+        CommonService.favs(gameCod);
+        $route.reload();
+    };
+    /*$scope.cart = services_shop.setArray(cart);*/
 });

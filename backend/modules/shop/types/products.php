@@ -4,7 +4,8 @@ use function Utils\array_to_obj;
 
 class Products {
 
-    public $filters = array();
+    public $platforms = [];
+    public $genres = [];
     public $search = "";
     public $offset = 0;
     

@@ -1,4 +1,4 @@
-wolfgames.controller('controller_login', function ($window, $scope, $routeParams, $route, $uibModalInstance, services, CommonService, toastr, $rootScope) {
+wolfgames.controller('controller_login', function ($scope, $route, $uibModalInstance, services, CommonService, toastr, $rootScope) {
 
     //-------[MODAl ACTIONS]-------\\
     $scope.closeModal = function () {
@@ -27,6 +27,7 @@ wolfgames.controller('controller_login', function ($window, $scope, $routeParams
                     $rootScope.userProfile = data;
                     toastr.success('Welcome ' + data.user);
                     $scope.closeModal();
+                    $route.reload();
                 } else {
                     toastr.error("Error: This account doesn't exist.");
                 }
@@ -93,7 +94,6 @@ wolfgames.controller('controller_register', function ($scope, $uibModalInstance,
         };
         services.post('log', 'register', user)
             .then(function (data) {
-                console.log(data);
                 if (data.result == 0) {
                     $scope.closeModal();
                     toastr.success('We send you a mesage to verify your account.');
@@ -106,7 +106,7 @@ wolfgames.controller('controller_register', function ($scope, $uibModalInstance,
     };
 });
 
-wolfgames.controller('controller_logout', function ($scope, $uibModalInstance, $rootScope, $cookies) {
+wolfgames.controller('controller_logout', function ($scope, $uibModalInstance, $rootScope, $cookies, $route) {
 
 
     //-------[MODAl ACTIONS]-------\\
@@ -120,5 +120,6 @@ wolfgames.controller('controller_logout', function ($scope, $uibModalInstance, $
         delete localStorage.dataSession;
         delete $rootScope.userProfile;
         $uibModalInstance.dismiss('cancel');
+        $route.reload();
     }
 });

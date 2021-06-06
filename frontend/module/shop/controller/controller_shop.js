@@ -1,4 +1,4 @@
-wolfgames.controller('controller_shop', function ($window, $scope, $routeParams, $route,$uibModal, services, games, CommonService) {
+wolfgames.controller('controller_shop', function ($scope, $routeParams, $route, games, CommonService, favs) {
 
     //-----[VARS DECLARATIONS]-----\\
     var arrGames = games.games;
@@ -8,9 +8,8 @@ wolfgames.controller('controller_shop', function ($window, $scope, $routeParams,
     var allGenres = games.allGenres;
     var allPlatforms = games.allPlatforms;
 
-    console.log(games)
     //----------[DATA INJECTION]----------\\
-    $scope.arrGames = arrGames;
+    $scope.arrGames = setUnsetFavs(arrGames, favs);
     $scope.arrPlatforms = arrPlatforms;
     $scope.arrGenres = arrGenres;
     $scope.allGenres = checkDisable(allGenres, arrGenres, "genres", "genreName");
@@ -18,7 +17,6 @@ wolfgames.controller('controller_shop', function ($window, $scope, $routeParams,
     $scope.total = pagination(total);
 
     //-----------[FILTER ROUTE APPLIES]------------\\
-
     $scope.filters = function (filter, type) {
         var k = ['platforms', 'genres']
         if (k.indexOf(type) !== -1) {
@@ -43,6 +41,21 @@ wolfgames.controller('controller_shop', function ($window, $scope, $routeParams,
         }
     }
 
+    function setUnsetFavs(games, favs) {
+        if (favs) {
+            for (let i = 0; i < games.length; i++) {
+                let fav = '';
+                //---------[ADDING CHECKED ATTR]---------\\
+                for (let l = 0; l < favs.length; l++) {
+                    if (games[i]['gameCod'] === favs[l]['gameCod']) {
+                        fav = true;
+                        games[i].fav = fav;
+                    }
+                }
+            }
+        }
+        return games;
+    }
     //-----------[FILTER CHECK AND DISABLE APPLIES]------------\\
     function checkDisable(allFilters, filters, type, key) {
         for (let i = 0; i < allFilters.length; i++) {
@@ -131,14 +144,29 @@ wolfgames.controller('controller_shop', function ($window, $scope, $routeParams,
         location.href = "#/shop/details/" + game;
     };
 
+    //----------[MODAL DETAILS]------------\\
     $scope.openModal = function (gameCod) {
-        CommonService.openModal(gameCod,'shop','details_product','details_controller');
+        CommonService.openModal(gameCod, 'shop', 'details_product', 'details_controller');
+    };
+
+    //----------[FUNCTION SET OR UNSET FAV]----------\\
+    $scope.fav = function (gameCod) {
+        CommonService.favs(gameCod);
+        $route.reload();
     };
 });
 
-wolfgames.controller('details_controller', function ($scope,gameDetails,$uibModalInstance) {
-    
+wolfgames.controller('details_controller', function ($scope, gameDetails, $uibModalInstance, CommonService, fav, $route) {
+
     $scope.data = gameDetails;
+    if(fav){
+        $scope.data.fav = true;
+    }
+
+    $scope.fav = function (gameCod) {
+        CommonService.favs(gameCod);
+        $route.reload();
+    };
 
     $scope.closeModal = function () {
         $uibModalInstance.dismiss('cancel');

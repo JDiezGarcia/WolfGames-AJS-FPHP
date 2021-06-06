@@ -11,10 +11,10 @@ class LogController extends Controller {
         //"action" => array('middleware(jwt,json..)
     );
 
-    private function give_token($user) {
+    private function generate_token($user) {
         $expires = "+1 hour";
         $token = JWT::encode([
-            'username' => $user,
+            'userCod' => $user,
             'expires' => strtotime($expires)
         ]);
         /* nombre: token, tiempo_exp: exprires, path_cookies: /(toda la pagina), dominio: localhost(http://192.168.100.8:8080/)
@@ -28,7 +28,7 @@ class LogController extends Controller {
             $userLog->username, 
             $userLog->password
         );
-        $this->give_token($userLog['user']);
+        $this->generate_token($userLog['userCod']);
         res::ok($userLog);
     }
     

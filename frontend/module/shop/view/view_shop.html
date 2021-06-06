@@ -10,8 +10,9 @@
                         <h3 data-tr="platforms">Platforms</h3>
                         <div class="form-check filters-platforms">
                             <div class="platforms-filter" ng-repeat="platform in allPlatforms">
-                                <input class="form-check-input" type="checkbox" value=""
-                                    id="{{platform.platformCod}}" ng-click="filters('{{platform.platformCod}}', 'platforms')" ng-checked="platform.prop == 'checked'" ng-disabled="platform.prop == 'disabled'">
+                                <input class="form-check-input" type="checkbox" value="" id="{{platform.platformCod}}"
+                                    ng-click="filters('{{platform.platformCod}}', 'platforms')"
+                                    ng-checked="platform.prop == 'checked'" ng-disabled="platform.prop == 'disabled'">
                                 <label class="form-check-label" data-tr="{{platform.platformCod}}"
                                     for="{{platform.platformCod}}">
                                     {{platform.platformName}}<span>({{platform.total}})</span>
@@ -23,7 +24,9 @@
                         <h3 data-tr="genre">Genre</h3>
                         <div class="form-check filters-genres">
                             <div class="genre-filter" ng-repeat="genre in allGenres">
-                                <input class="form-check-input" type="checkbox" value="" id="{{genre.genreName}}" ng-click="filters('{{genre.genreName}}', 'genres')" ng-checked="genre.prop == 'checked'" ng-disabled="genre.prop == 'disabled'">
+                                <input class="form-check-input" type="checkbox" value="" id="{{genre.genreName}}"
+                                    ng-click="filters('{{genre.genreName}}', 'genres')"
+                                    ng-checked="genre.prop == 'checked'" ng-disabled="genre.prop == 'disabled'">
                                 <label class="form-check-label" data-tr="{{genre.genreName}}" for="{{genre.genreName}}">
                                     {{genre.genreName}}
                                 </label><span>({{genre.total}})</span>
@@ -38,17 +41,31 @@
                     <div class="col-3 product-shop" ng-repeat="game in arrGames">
                         <div class="card p-3" id="{{game.gameCode}}">
                             <div>
-                                <img ng-src="/angularjs_php/frontend/view/img/games/{{game.gameImg}}" width="100%" ng-click="redirectShopDetails('{{game.gameCod}}')"/>
+                                <img ng-src="/angularjs_php/frontend/view/img/games/{{game.gameImg}}" width="100%"
+                                    ng-click="redirectShopDetails('{{game.gameCod}}')" />
                                 <div class="product-details" id="{{game.gameCod}}">
                                     <span class="fw-bold d-block game-name"
                                         style="display:inline-block">{{game.gameName}}</span>
                                     <span data-tr="price"></span><span>Price: <span
                                             class="detail">{{game.price}}€</span></span><br>
-                                    <span data-tr="pgi"></span><span>PGI: <span class="detail">{{game.pgi}}</span></span>
-                                    <div class="buttons d-flex flex-row">
-                                        <div class="cart"><i ng-click="openModal()" class="fa fa-shopping-cart"></i></div>
-                                        <button class="btn btn-success cart-button btn-block" id="{{game.gameCod}}"
-                                            data-tr="view" ng-click="openModal('{{game.gameCod}}')">View<span class="dot"></span></button>
+                                    <span data-tr="pgi"></span><span>PGI: <span
+                                            class="detail">{{game.pgi}}</span></span>
+                                    <div class="buttons d-flex flex-row row" style="font-size-adjust: 30px;">
+                                        
+                                        <button class="col-4 btn btn-success button-card" id="{{game.gameCod}}"
+                                            ng-click="addToCard()">
+                                            <i class="fa fa-shopping-cart"></i>
+                                        </button>
+
+                                        <button class="col-4 btn btn-success button-card" id="{{game.gameCod}}"
+                                            ng-click="openModal('{{game.gameCod}}')">
+                                            <i class="fa fa-eye"></i>
+                                        </button>
+                                        <button class="col-4 btn btn-success button-card" id="{{game.gameCod}}"
+                                            ng-click="fav('{{game.gameCod}}')">
+                                            <i ng-show="{{game.fav == null}}" class="fa fa-heart-o"></i>
+                                            <i ng-show="{{game.fav != null}}" class="fa fa-heart"></i>
+                                        </button>
                                     </div>
                                     <div class="weight"> <small>{{game.description}}</small></div>
                                 </div>
@@ -64,10 +81,12 @@
                                 <a class="page-link" aria-disabled="true" data-tr="first">First</a>
                             </li>
                             <li class="page-item" ng-show="total.actualPage > 1">
-                                <a class="page-link" aria-disabled="true" data-tr="first" ng-click="changePage('{{total.actualPage}}', 'First')">First</a>
+                                <a class="page-link" aria-disabled="true" data-tr="first"
+                                    ng-click="changePage('{{total.actualPage}}', 'First')">First</a>
                             </li>
-                            <li class="page-item" ng-show="total.previousPage >= 1" >
-                                <a class="page-link" ng-click="changePage('{{total.actualPage}}', 'Previous')">{{total.previousPage}}</a>
+                            <li class="page-item" ng-show="total.previousPage >= 1">
+                                <a class="page-link"
+                                    ng-click="changePage('{{total.actualPage}}', 'Previous')">{{total.previousPage}}</a>
                             </li>
 
                             <li class="page-item active">
@@ -75,7 +94,8 @@
                             </li>
 
                             <li class="page-item" ng-show="total.nextPage <= total.pages">
-                                <a class="page-link" ng-click="changePage('{{total.actualPage}}', 'Next')">{{total.nextPage}}</a>
+                                <a class="page-link"
+                                    ng-click="changePage('{{total.actualPage}}', 'Next')">{{total.nextPage}}</a>
                             </li>
 
                             <li class="page-item disabled" ng-show="total.actualPage >= total.pages">
@@ -83,7 +103,9 @@
                             </li>
 
                             <li class="page-item" ng-show="total.actualPage < total.pages">
-                                <a class="page-link" ng-click="changePage('{{total.actualPage}}','Last','{{total.pages}}')" data-tr="last">Last</a>
+                                <a class="page-link"
+                                    ng-click="changePage('{{total.actualPage}}','Last','{{total.pages}}')"
+                                    data-tr="last">Last</a>
                             </li>
                         </ul>
                     </nav>

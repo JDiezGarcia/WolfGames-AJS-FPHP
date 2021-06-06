@@ -1,4 +1,4 @@
-var wolfgames = angular.module('wolfgames', ['ngRoute', 'ngAnimate', 'ngTouch', 'ngSanitize', 'toastr', 'ui.bootstrap', 'ngAria', 'ngMessages','ngCookies']);
+var wolfgames = angular.module('wolfgames', ['ngRoute', 'ngAnimate', 'ngTouch', 'ngSanitize', 'toastr', 'ui.bootstrap', 'ngAria', 'ngMessages', 'ngCookies']);
 //----- TRADUCTION I18N -----\\
 //--- http://jsfiddle.net/arleray/pmbyst0n/ ---\\
 wolfgames.run(function ($rootScope, $window, services, CommonService, toastr, $cookies, $cookieStore) {
@@ -45,17 +45,17 @@ wolfgames.run(function ($rootScope, $window, services, CommonService, toastr, $c
 
     //----------[MODALS]----------\\
     $rootScope.openLogModal = function () {
-        if($cookies.get('sessionToken')){
+        if ($cookies.get('sessionToken')) {
             CommonService.openModal('null', 'log', 'logout', 'controller_logout');
-        }else{
+        } else {
             CommonService.openModal('null', 'log', 'login', 'controller_login');
         }
     };
 
     //----------[SESSION]-----------\\
-    if($cookies.get('sessionToken')){
+    if ($cookies.get('sessionToken')) {
         $rootScope.userProfile = JSON.parse(localStorage.dataSession);
-    }else{
+    } else {
         delete localStorage.dataSession;
         delete $rootScope.userProfile;
     }
@@ -102,22 +102,27 @@ wolfgames.config(['$routeProvider', '$locationProvider',
                         }
 
                         if (Object.keys(params).length > 0) {
-                            data = await services.post('shop', 'products', { filters: params, offset: page, search: search });
+                            data = {
+                                platforms: params.platforms,
+                                genres: params.genres,
+                                offset: page,
+                                search: search
+                            }
+                            response = await services.post('shop', 'products', data);
                         } else {
-                            data = await services.post('shop', 'products', { offset: 0 });
+                            response = await services.post('shop', 'products', { offset: 0 });
                         }
-                        if (Object.keys(data.games).length <= 0) {
+                        if (Object.keys(response.games).length <= 0) {
                             return null;
                         }
-                        return data;
-                    }
-                    /*,
-                    favs: function (services) {
-                        return services.post('shop', 'sendFavs', { JWT: localStorage.token });
+                        return response;
                     },
-                    cart: function (services) {
-                        return services.post('cart', 'selectCart', { JWT: localStorage.token });
-                    }*/
+                    favs: async function (services, $cookies) {
+                        if ($cookies.get('sessionToken')) {
+                            let favs = await services.get('shop', 'multi_fav');
+                            return favs;
+                        }
+                    }
                 }// END_RESOLVE
             })
             .when('/shop/details/:gameCod', {
@@ -127,25 +132,21 @@ wolfgames.config(['$routeProvider', '$locationProvider',
                     game: async function (services, $route) {
                         data = await services.get('shop', 'details_product', $route.current.params.gameCod);
                         return data;
-                    }/*,
-                    favs: function (services) {
-                        return services.post('shop', 'sendFavs', { JWT: localStorage.token });
                     },
+                    fav: async function (services, $cookies, $route) {
+                        if ($cookies.get('sessionToken')) {
+                            let favs = await services.get('shop', 'single_fav', $route.current.params.gameCod);
+                            return favs;
+                        }
+                    }/*,
                     cart: function (services) {
                         return services.post('cart', 'selectCart', { JWT: localStorage.token });
                     }*/
                 }// END_RESOLVE
             })
-            /*.when("/contact", {
+                /*.when("/contact", {
                     templateUrl: "frontend/module/contact/view/view_contact.html", 
                     controller: "controller_contact"
-                })
-                }).when("/login", {
-                    templateUrl: "frontend/module/login/view/view_logIn.html",
-                    controller: "controller_logIn"
-                }).when("/register", {
-                    templateUrl : "frontend/module/login/view/view_register.html",
-                    controller: "controller_register"
                 }).when("/recover", {
                     templateUrl: "frontend/module/login/view/view_recover.html",
                     controller: "controller_recover"

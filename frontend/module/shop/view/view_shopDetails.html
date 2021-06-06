@@ -16,10 +16,14 @@
                         <span class="platform" data-toggle="tooltip" title="">coming soon</span>
                     </p>
                     <div class="action">
-                        <button class="add-to-cart btn btn-default" type="button" style="border: solid 1px black"><span
+                        <button class="add-to-cart btn btn-default" type="button" style="background-color:#66A6DB; color: white;"><span
                                 class="fa fa-shopping-cart"></span>
                             Add to Cart..</button>
-                        <button class="like btn btn-default" type="button" style="border: solid 1px black"><span class="fa fa-heart"></span></button>
+                        <button class="btn btn-success" id="{{data.gameCod}}"
+                            ng-click="fav('{{data.gameCod}}')">
+                            <i ng-show="{{data.fav == null}}" class="fa fa-heart-o"></i>
+                            <i ng-show="{{data.fav != null}}" class="fa fa-heart"></i>
+                        </button>
                     </div>
                 </fieldset>
             </div>

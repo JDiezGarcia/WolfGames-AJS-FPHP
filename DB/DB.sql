@@ -170,3 +170,30 @@ BEGIN
 	END IF;
 
 END//
+
+------CREATE FAV TABLE------
+CREATE TABLE IF NOT EXISTS `games_favs` (
+  `ID` int NOT NULL AUTO_INCREMENT,
+  `userCod` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
+  `gameCod` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
+  PRIMARY KEY (`ID`),
+  FOREIGN KEY(userCod) REFERENCES users(userCod),
+  FOREIGN KEY(gameCod) REFERENCES games(gameCod),
+  CONSTRAINT userLike UNIQUE KEY `NONCLUSTERED` (`userCod`,`gameCod`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci
+
+DELIMITER
+    //
+CREATE PROCEDURE favsActions(
+    IN userCod VARCHAR(100),
+    IN gameCod VARCHAR(50)
+)
+BEGIN
+   IF NOT EXISTS(SELECT * FROM games_favs gf WHERE gf.userCod = userCod AND gf.gameCod = gameCod)THEN
+        INSERT INTO games_favs (userCod, gameCod) VALUES (userCod, gameCod);
+    ELSE
+        DELETE FROM games_favs gf WHERE gf.gameCod = gameCod AND gf.userCod = userCod;
+    END IF;
+    
+END IF ;
+END //

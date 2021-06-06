@@ -5,7 +5,7 @@ class Client {
     static $data = array(); // POST {data: data}
     static $uri = array(); // ['car', 'search']
     static $ip_addr = ""; // IP
-    static $jwt_data;
+    static $jwt_session;
 }
 
 ?>

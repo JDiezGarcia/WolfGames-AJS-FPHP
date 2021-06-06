@@ -6,12 +6,10 @@ wolfgames.factory("services", ['$http', '$q', function ($http, $q) {
         var defered = $q.defer();
         var promise = defered.promise;
         
-        
         $http({
             method: 'GET',
             url: serviceBase + '/' + module + '/' + action + (data ? '/' + data : '')
         }).success(function (data, status, headers, config) {
-            console.log(data.content)
             defered.resolve(data.content);
         }).error(function (data, status, headers, config) {
             defered.reject(data.error);

@@ -1,118 +1,120 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid">
-
-        <a class="navbar-brand" href="#/home">
-            <h1><img src="/angularjs_fphp/frontend/view/img/logo.png" alt="logo"></h1>
-        </a>
-
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-
-            <div id="navbar-menu">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+<header id="header">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+    
+            <a class="navbar-brand" href="#/home">
+                <h1><img src="/angularjs_fphp/frontend/view/img/logo.png" alt="logo"></h1>
+            </a>
+    
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+    
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    
+                <div id="navbar-menu">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link home" href="#/home" data-tr="Home">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link shop" href="#/shop" data-tr="shop">
+                                Shop
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link services" href="#/services" data-tr="Services">
+                                Services
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link aboutus" href="#/aboutus" data-tr="AboutUs">About Us</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link contactus" href="#/contact" data-tr="Contact">Contact</a>
+                        </li>
+                    </ul>
+                </div>
+    
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0" id="navbar-lang">
                     <li class="nav-item">
-                        <a class="nav-link home" href="#/home" data-tr="Home">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link shop" href="#/shop" data-tr="shop">
-                            Shop
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link services" href="#/services" data-tr="Services">
-                            Services
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link aboutus" href="#/aboutus" data-tr="AboutUs">About Us</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link contactus" href="#/contact" data-tr="Contact">Contact</a>
+                        <select class="form-select" name="lang-select" id="lang-select" style="border: none;">
+                            <option value="val" data-tr="Valencian">Valenciano</option>
+                            <option value="es" data-tr="Spanish">Español</option>
+                            <option value="en" data-tr="English">Ingles</option>
+                        </select>
                     </li>
                 </ul>
-            </div>
-
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0" id="navbar-lang">
-                <li class="nav-item">
-                    <select class="form-select" name="lang-select" id="lang-select" style="border: none;">
-                        <option value="val" data-tr="Valencian">Valenciano</option>
-                        <option value="es" data-tr="Spanish">Español</option>
-                        <option value="en" data-tr="English">Ingles</option>
-                    </select>
-                </li>
-            </ul>
-
-            <div id="navbar-search" style="margin-right: 20px;">
-                <form class="d-flex searcher">
-                    <div class="container" id="search-container" style="width: 300px">
-                        <div class="row g-0" style="width: inherit;">
-                            <div class="input-group">
-                                <input ng-keyup="$event.keyCode !== 13 && searchBar()" class="form-control"
-                                    id="search-bar" type="text" placeholder="Search" aria-label="Search"
-                                    autocomplete="off" ng-model="$root.searchQuery"
-                                    ng-keydown="$event.keyCode === 13 && $root.noMatch === false && redirectSearchList()">
-                                <button class="btn btn-outline-success" id="search-button" type="button"
-                                    data-tr="search"><i class="fa fa-search" aria-hidden="true"
-                                        ng-click="$root.noMatch === false && redirectSearchList()"></i></button>
+    
+                <div id="navbar-search" style="margin-right: 20px;">
+                    <form class="d-flex searcher">
+                        <div class="container" id="search-container" style="width: 300px">
+                            <div class="row g-0" style="width: inherit;">
+                                <div class="input-group">
+                                    <input ng-keyup="$event.keyCode !== 13 && searchBar()" class="form-control"
+                                        id="search-bar" type="text" placeholder="Search" aria-label="Search"
+                                        autocomplete="off" ng-model="$root.searchQuery"
+                                        ng-keydown="$event.keyCode === 13 && $root.noMatch === false && redirectSearchList()">
+                                    <button class="btn btn-outline-success" id="search-button" type="button"
+                                        data-tr="search"><i class="fa fa-search" aria-hidden="true"
+                                            ng-click="$root.noMatch === false && redirectSearchList()"></i></button>
+                                </div>
                             </div>
-                        </div>
-                        <div class="card overflow-auto" id="searched-items"
-                            style="width: inherit; max-height: 300px; position: absolute; z-index: 5; "
-                            ng-hide="$root.noQuery == true">
-                            <span ng-if="$root.noMatch == true">No hay resultados de la busqueda</span>
-                            <ul class="list-group list-group-flush" ng-if="$root.noMatch == false">
-                                <li ng-repeat="searchGame in $root.searchGames" class="list-group-item"
-                                    ng-click="redirectSearchOne(searchGame.gameCod)">
-                                    <div id="{{searchGame.gameCod}}">
-                                        <div class="row">
-                                            <div class="col-4">
-                                                <img style="width:100%"
-                                                    ng-src="/angularjs_php/frontend/view/img/games/{{searchGame.gameImg}}">
-                                            </div>
-                                            <div class="col-8">
-                                                <div class="row">
-                                                    <div style="font-size:18px;" class="col">{{searchGame.gameName}}
-                                                    </div>
+                            <div class="card overflow-auto" id="searched-items"
+                                style="width: inherit; max-height: 300px; position: absolute; z-index: 5; "
+                                ng-hide="$root.noQuery == true">
+                                <span ng-if="$root.noMatch == true">No hay resultados de la busqueda</span>
+                                <ul class="list-group list-group-flush" ng-if="$root.noMatch == false">
+                                    <li ng-repeat="searchGame in $root.searchGames" class="list-group-item"
+                                        ng-click="redirectSearchOne(searchGame.gameCod)">
+                                        <div id="{{searchGame.gameCod}}">
+                                            <div class="row">
+                                                <div class="col-4">
+                                                    <img style="width:100%"
+                                                        ng-src="/angularjs_php/frontend/view/img/games/{{searchGame.gameImg}}">
                                                 </div>
-                                                <div class="row">
-                                                    <div style="font-weight: bold;" class="col">{{searchGame.price}}€
+                                                <div class="col-8">
+                                                    <div class="row">
+                                                        <div style="font-size:18px;" class="col">{{searchGame.gameName}}
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div style="font-weight: bold;" class="col">{{searchGame.price}}€
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </li>
-                            </ul>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
+    
+                <div class="navbar-buttons btn-group">
+                    <button class="login btn btn-outline-success" id="navbar-login" ng-click="openLogModal()">
+                        <span ng-show="userProfile == null">
+                            <i class="fa fa-user-o" id="login-icon">
+                                <span data-tr="login">Login</span>
+                            </i>
+                        </span>
+                        <span>
+                            <div ng-show="userProfile != null" class="{{userProfile.user}}" id="login-icon"><img style="max-width: 30px;"
+                                    src="/angularjs_fphp/frontend/view/img/user/{{userProfile.img}}" /><span>{{userProfile.user}}</span>
+                            </div>
+                        </span>
+                    </button>
+    
+                    <button class="shopping-cart btn btn-outline-success" id="navbar-shopping-cart">
+                        <span>
+                            <i class="fa fa-shopping-cart"></i>
+                        </span>
+                    </button>
+                </div>
+    
             </div>
-
-            <div class="navbar-buttons btn-group">
-                <button class="login btn btn-outline-success" id="navbar-login" ng-click="openLogModal()">
-                    <span ng-show="userProfile == null">
-                        <i class="fa fa-user-o" id="login-icon">
-                            <span data-tr="login">Login</span>
-                        </i>
-                    </span>
-                    <span>
-                        <div ng-show="userProfile != null" class="{{userProfile.user}}" id="login-icon"><img style="max-width: 30px;"
-                                src="/angularjs_fphp/frontend/view/img/user/{{userProfile.img}}" /><span>{{userProfile.user}}</span>
-                        </div>
-                    </span>
-                </button>
-
-                <button class="shopping-cart btn btn-outline-success" id="navbar-shopping-cart">
-                    <span>
-                        <i class="fa fa-shopping-cart"></i>
-                    </span>
-                </button>
-            </div>
-
         </div>
-    </div>
-</nav>
+    </nav>
+</header>
