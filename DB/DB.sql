@@ -197,3 +197,91 @@ BEGIN
     
 END IF ;
 END //
+
+---SYSTEM CART---
+--interval angular--
+CREATE TABLE IF NOT EXISTS `order_Header` (
+  `idOrder` int NOT NULL AUTO_INCREMENT,
+  `userCod` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
+  `status` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
+  `orderDate` DATE DEFAULT NULL;
+  `total` float NOT NULL,
+  PRIMARY KEY (`idOrder`),
+  FOREIGN KEY(userCod) REFERENCES users(userCod),
+  CONSTRAINT uniqueOrder UNIQUE KEY `NONCLUSTERED` (`userCod`,`idOrder`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci
+
+CREATE TABLE IF NOT EXISTS `order_lines` (
+  `idLine` int NOT NULL AUTO_INCREMENT,
+  `idOrder` int NOT NULL,
+  `gameCod` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
+  `price` float NOT NULL,
+  `quantity` int NOT NULL,
+  PRIMARY KEY (`idLine`),
+  FOREIGN KEY(gameCod) REFERENCES games(gameCod),
+  FOREIGN KEY(idOrder) REFERENCES order_header(idOrder),
+  CONSTRAINT uniqueOrder UNIQUE KEY `NONCLUSTERED` (`gameCod`,`idOrder`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci
+
+
+--- When Logs / Procedure / Insert or Select / last Order from User / ---
+
+CREATE PROCEDURE IF NOT EXISTS selectHeader(
+  IN user VARCHAR(100), 
+  )
+BEGIN			
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        RESIGNAL;
+    END;
+    START TRANSACTION;     
+        IF NOT EXISTS(SELECT * FROM order_header oh WHERE oh.userCod = user AND oh.status = 'P')THEN
+            INSERT INTO order_header (userCod) VALUES (user);
+        END IF;
+    COMMIT;
+
+    SELECT idOrder FROM order_header WHERE userCod = user AND `status` = 'P';
+END
+
+--- Then Retrieves / SELECT lineOrders from User / ---
+
+CREATE PROCEDURE IF NOT EXISTS retrieveOrder(
+  IN order int, 
+  )
+BEGIN			    
+    SELECT * FROM order_lines INNER JOIN WHERE idOrder = order;
+END
+
+--- Each 'x' min / UPDATE or INSERT / line order ---
+
+SET AUTOCOMMIT = 0;
+START TRANSACTION;     
+        INSERT INTO order_lines (idOrder, gameCod, quantity) 
+        VALUES(order, game, qty)
+        ON DUPLICATE KEY UPDATE quantity = values(quantity);
+SET AUTOCOMMIT = 1;
+
+--- Trigger header / if Status F / Update actualDate ---
+
+CREATE PROCEDURE IF NOT EXISTS checkOut(
+  IN user VARCHAR(100), 
+  )
+BEGIN			
+    DECLARE orderCod INT DEFAULT 0;
+    DECLARE totalPrice float;
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        RESIGNAL;
+    END;
+    
+    START TRANSACTION;
+        SELECT oh.idOrder INTO orderCod FROM order_header oh WHERE oh.userCod = user AND oh.status = 'P';
+        UPDATE order_lines ol INNER JOIN games g ON g.gameCod = ol.gameCod SET ol.price = g.price WHERE ol.idOrder = orderCod;
+        SELECT SUM(ol.price*ol.quantity) INTO totalPrice FROM order_line ol WHERE ol.idOrder = orderCod;
+        UPDATE order_header SET total = totalPrice, orderDate = CURRENT_TIMESTAMP(), `status` = 'F' WHERE orderId = orderCod;
+    COMMIT;
+
+    SELECT * FROM order_header WHERE userCod = user AND idOrder = orderCod ;
+END

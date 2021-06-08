@@ -24,42 +24,32 @@ class Database {
         if (!isset($this->conn)) {
             $this->connect();
         }
-        if (count($values) == 0 || $types == '') {
-            $query = $this->conn->query($query_str);
-            $result = (object) [];
-            if ($query === false) {
-                throw new MysqlException('Mysqli error: ' . mysqli_error($this->conn));
-            } else {
-                if (isset($query->insert_id)) {
-                    $result->insert_id = $query->insert_id;
-                }
-                $result->query = $query;
-                return $result;
-            }
-        } else {
-            //BINDPARAMS
-            $stmt = $this->conn->prepare($query_str);
-            if (!$stmt) {
-                throw new MysqlException('Error invalid prepared query ' . $query_str);
-            }
-            $stmt->bind_param($types, ...$values);
-            if (!$stmt->execute()) {
-                if ($stmt->sqlstate == 45000) {
-                    throw new BadReqException($stmt->error);
-                } else { 
-                    throw new MysqlException('Error executing query: ' . $stmt->error);
-                }
-            }
-            $result = (object) [];
-            $result->insert_id = $stmt->insert_id;
-            $result->query = $stmt->get_result();
-            if ($result === false) {
-                throw new MysqlException('Mysqli error: ' . mysqli_error($this->conn));
-            }
-            $stmt->close();
-            return $result;
+        //BINDPARAMS
+        $stmt = $this->conn->prepare($query_str);
+        if (!$stmt) {
+            throw new MysqlException('Error invalid prepared query ' . $query_str);
         }
         
+        if (count($values) > 0) {
+            $stmt->bind_param($types, ...$values);
+        }
+
+        if (!$stmt->execute()) {
+            if ($stmt->sqlstate == 45000) {
+                throw new BadReqException($stmt->error);
+            } else { 
+                throw new MysqlException('Error executing query: ' . $stmt->error);
+            }
+        }
+        $result = (object) [];
+        $result->insert_id = $stmt->insert_id;
+        $result->query = $stmt->get_result();
+        if ($result === false) {
+            throw new MysqlException('Mysqli error: ' . mysqli_error($this->conn));
+        }
+        $stmt->close();
+        return $result;
+
     }
 }
 
