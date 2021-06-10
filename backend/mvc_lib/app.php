@@ -70,7 +70,6 @@ class App {
     private function call_action($controller, $func) {
         $reflection_method = new ReflectionMethod(get_class($controller), $func);
         $reflection_params = $reflection_method->getParameters();
-        
         $params = array();
         $r_param_count = count($reflection_params);
 

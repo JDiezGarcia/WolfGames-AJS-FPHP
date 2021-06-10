@@ -1,5 +1,7 @@
 <?php
 
+use Utils;
+
 class Database {
     public static $static_conn;
     public $conn;
@@ -7,7 +9,8 @@ class Database {
     //Singleton
     public function connect() {
         if (!isset(Database::$static_conn)) {
-            Database::$static_conn = new mysqli("127.0.0.1", "javier", "la1la2la3la4", "wolf_games");
+            $conData = Utils\get_json_data("db");
+            Database::$static_conn = new mysqli($conData["ip"], $conData['user'], $conData['pass'], $conData['name']);
             if (Database::$static_conn->connect_errno) {
                 throw new MysqlException("Error connecting to db");
             }
@@ -50,6 +53,20 @@ class Database {
         $stmt->close();
         return $result;
 
+    }
+
+    public function transaction() {
+        $this->conn->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
+    }
+
+    public function commit() {
+        $this->conn->commit();
+    }
+    public function rollback() {
+        $this->conn->rollback();
+    }
+    public function autocommit($bol) {
+        $this->conn->autocommit($bol);
     }
 }
 

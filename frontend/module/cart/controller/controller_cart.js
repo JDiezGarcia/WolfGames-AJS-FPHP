@@ -1,4 +1,4 @@
-wolfgames.controller('controller_cart', function ($scope, games, $route, services, $cookies, toastr) {
+wolfgames.controller('controller_cart', function ($scope, games, $route, services, $cookies, toastr, CommonService, $rootScope) {
 
     //----------[DATA INJECTION]----------\\
     $scope.games = games;
@@ -44,9 +44,11 @@ wolfgames.controller('controller_cart', function ($scope, games, $route, service
     //----------[CALCULATE TOTAL PRICE]----------\
     $scope.total = function () {
         var total = 0;
-        for (var i = 0; i < $scope.games.length; i++) {
-            var games = $scope.games[i];
-            total += (games.price * games.quantity);
+        if($scope.games){
+            for (var i = 0; i < $scope.games.length; i++) {
+                var games = $scope.games[i];
+                total += (games.price * games.quantity);
+            }
         }
         return total;
     }
@@ -61,18 +63,35 @@ wolfgames.controller('controller_cart', function ($scope, games, $route, service
             } 
             i++
         }
-        localStorage.cartGames = JSON.stringify(newCart);
+        if(newCart.length > 0){
+            localStorage.cartGames = JSON.stringify(newCart);
+            $rootScope.cartTotal = newCart.length;
+        }else{
+            delete localStorage.cartGames;
+            $rootScope.cartTotal = 0;
+        }
         $route.reload();
     }
 
     $scope.checkOut = function (){
-        let games = JSON.parse(localStorage.cartGames);
+        let games = {
+            games: JSON.parse(localStorage.cartGames)
+        }
         if ($cookies.get('sessionToken')) {
             services.post('cart', 'insert_list', games);
-            services.get('cart', 'checkout');
+            services.get('cart', 'checkout')
+            .then(function (data) {
+                console.log(data)
+                toastr.success('Checkout Successful');
+                delete localStorage.cartGames;
+                $rootScope.cartTotal = 0;
+                $route.reload();
+            }, function () {
+                toastr.error('Checkout Error');
+            });
         } else {
             toastr.warning("You need to login a account to checkout");
-            openModal('null', 'log', 'login', 'controller_login');
+            CommonService.openModal('null', 'log', 'login', 'controller_login');
         }
     }
 });

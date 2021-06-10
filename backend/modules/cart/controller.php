@@ -17,7 +17,6 @@ class CartController extends Controller {
     }
     
     public function insert_list_post($games) {
-        var_dump($games);
         $this->model->insert_lines(
             $games, 
             Client::$jwt_session->userCod

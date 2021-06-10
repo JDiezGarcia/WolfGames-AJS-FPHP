@@ -6,6 +6,7 @@ wolfgames.factory("CommonService", ['services', '$uibModal', '$cookies', 'toastr
     service.favs = favs;
     service.addGame = addGame;
     service.userCart = userCart;
+    service.updateCart = updateCart;
     return service;
 
     //----------------[MODAL INSTANCE]---------------\\
@@ -98,10 +99,23 @@ wolfgames.factory("CommonService", ['services', '$uibModal', '$cookies', 'toastr
     function userCart() {
         services.get('cart', 'list').then(function (data) {
             games = data;
-            for (let i = 0; i < games.length; i++) {
-                addGame(games[i]);
+            if(games){
+                for (let i = 0; i < games.length; i++) {
+                    addGame(games[i]);
+                }
             }
         });
     }
 
+    //-----------[UPDATE CART]----------\\
+    function updateCart(){
+        if ($cookies.get('sessionToken')) {
+            if(localStorage.cartGames){
+                let games = {
+                    games: JSON.parse(localStorage.cartGames)
+                }
+            services.post('cart', 'insert_list', games);
+            }
+        }
+    }
 }]);

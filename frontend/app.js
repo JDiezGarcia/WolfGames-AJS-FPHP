@@ -66,6 +66,11 @@ wolfgames.run(function ($rootScope, services, CommonService, toastr, $cookies) {
     }else{
         $rootScope.cartTotal = 0;
     }
+
+    //----------[UPDATE CART]-----------\\
+    setInterval(function(){ 
+        CommonService.updateCart();
+      }, 20000)
 });
 
 wolfgames.config(['$routeProvider', '$locationProvider',
