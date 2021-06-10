@@ -1,4 +1,4 @@
-wolfgames.factory("CommonService", ['services', '$uibModal', '$cookies', 'toastr', function (services, $uibModal, $cookies, toastr) {
+wolfgames.factory("CommonService", ['$route','services', '$uibModal', '$cookies', 'toastr', function ($route, services, $uibModal, $cookies, toastr) {
 
     //----------------[RETURN FUNCTION FROM SERVICES]-------------\\
     var service = {};
@@ -97,13 +97,15 @@ wolfgames.factory("CommonService", ['services', '$uibModal', '$cookies', 'toastr
 
     //---------[LOAD THE CART FROM THE SERVER]---------\\
     function userCart() {
-        services.get('cart', 'list').then(function (data) {
+        services.get('cart', 'list')
+        .then(function (data) {
             games = data;
             if(games){
                 for (let i = 0; i < games.length; i++) {
                     addGame(games[i]);
                 }
             }
+            $route.reload();
         });
     }
 

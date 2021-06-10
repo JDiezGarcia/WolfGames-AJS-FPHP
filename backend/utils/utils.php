@@ -46,6 +46,7 @@ function get_json_data($key) {
     $key = $json[$key];
     return $key;
 }
+
 //Da la respuesta al cliente
 class res {
     static function redirect($location) {

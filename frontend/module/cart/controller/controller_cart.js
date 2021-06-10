@@ -1,7 +1,14 @@
 wolfgames.controller('controller_cart', function ($scope, games, $route, services, $cookies, toastr, CommonService, $rootScope) {
 
     //----------[DATA INJECTION]----------\\
-    $scope.games = games;
+    if(games){
+        console.log("a")
+        $scope.games = games;
+    }else{
+        if(localStorage.cartGames){
+            $scope.games = JSON.parse(localStorage.cartGames);
+        }  
+    }
 
     //-----------[CART INPUT LIMIT]------------\\
     $scope.limit = function (limit) {
@@ -54,23 +61,25 @@ wolfgames.controller('controller_cart', function ($scope, games, $route, service
     }
 
     $scope.removeGame = function (game) {
-        let cartList = JSON.parse(localStorage.cartGames);
-        let newCart = [];
-        let i = 0;
-        while (cartList[i]) {
-            if (cartList[i]['gameCod'] !== game['gameCod']) {
-                newCart.push(cartList[i]);
-            } 
-            i++
+        if(localStorage.cartGames){
+            let cartList = JSON.parse(localStorage.cartGames);
+            let newCart = [];
+            let i = 0;
+            while (cartList[i]) {
+                if (cartList[i]['gameCod'] !== game['gameCod']) {
+                    newCart.push(cartList[i]);
+                } 
+                i++
+            }
+            if(newCart.length > 0){
+                localStorage.cartGames = JSON.stringify(newCart);
+                $rootScope.cartTotal = newCart.length;
+            }else{
+                delete localStorage.cartGames;
+                $rootScope.cartTotal = 0;
+            }
+            $route.reload();
         }
-        if(newCart.length > 0){
-            localStorage.cartGames = JSON.stringify(newCart);
-            $rootScope.cartTotal = newCart.length;
-        }else{
-            delete localStorage.cartGames;
-            $rootScope.cartTotal = 0;
-        }
-        $route.reload();
     }
 
     $scope.checkOut = function (){

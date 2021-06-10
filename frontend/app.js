@@ -60,17 +60,17 @@ wolfgames.run(function ($rootScope, services, CommonService, toastr, $cookies) {
     }
 
     //----------[CART]----------\\
-    if(localStorage.cartGames){
+    if (localStorage.cartGames) {
         let count = JSON.parse(localStorage.cartGames);
         $rootScope.cartTotal = count.length;
-    }else{
+    } else {
         $rootScope.cartTotal = 0;
     }
 
     //----------[UPDATE CART]-----------\\
-    setInterval(function(){ 
+    setInterval(function () {
         CommonService.updateCart();
-      }, 20000)
+    }, 20000)
 });
 
 wolfgames.config(['$routeProvider', '$locationProvider',
@@ -156,10 +156,14 @@ wolfgames.config(['$routeProvider', '$locationProvider',
                 templateUrl: "frontend/module/cart/view/view_cart.html",
                 controller: "controller_cart",
                 resolve: {
-                    games: async function () {
+                    games: function ($cookies) {
                         if(localStorage.cartGames){
-                            data = JSON.parse(localStorage.cartGames);
-                            return data;
+                            let data = JSON.parse(localStorage.cartGames);
+                            if ($cookies.get('sessionToken')) {
+                                return data;
+                            } else {
+                                return data;
+                            }
                         }
                     }
                 }// END_RESOLVE
