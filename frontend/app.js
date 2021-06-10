@@ -1,7 +1,7 @@
 var wolfgames = angular.module('wolfgames', ['ngRoute', 'ngAnimate', 'ngTouch', 'ngSanitize', 'toastr', 'ui.bootstrap', 'ngAria', 'ngMessages', 'ngCookies']);
 //----- TRADUCTION I18N -----\\
 //--- http://jsfiddle.net/arleray/pmbyst0n/ ---\\
-wolfgames.run(function ($rootScope, $window, services, CommonService, toastr, $cookies, $cookieStore) {
+wolfgames.run(function ($rootScope, services, CommonService, toastr, $cookies) {
     //---------[SEARCH-BAR]---------\\
     $rootScope.searchBar = function () {
         let query = encodeURIComponent($rootScope.searchQuery);
@@ -17,12 +17,11 @@ wolfgames.run(function ($rootScope, $window, services, CommonService, toastr, $c
                         $rootScope.noMatch = true;
                     }
                 }, function (error) {
-                    console.log(error);
+                    toastr.error(error);
                     $rootScope.noMatch = true;
                 })
         } else {
             $rootScope.noQuery = true;
-            console.log("enter")
         }
     };
 
@@ -59,10 +58,18 @@ wolfgames.run(function ($rootScope, $window, services, CommonService, toastr, $c
         delete localStorage.dataSession;
         delete $rootScope.userProfile;
     }
+
+    //----------[CART]----------\\
+    if(localStorage.cartGames){
+        let count = JSON.parse(localStorage.cartGames);
+        $rootScope.cartTotal = count.length;
+    }else{
+        $rootScope.cartTotal = 0;
+    }
 });
 
 wolfgames.config(['$routeProvider', '$locationProvider',
-    function ($routeProvider, $locationProvider) {
+    function ($routeProvider) {
         $routeProvider
             .when("/home", {
                 templateUrl: "frontend/module/home/view/view_home.html",
@@ -138,10 +145,18 @@ wolfgames.config(['$routeProvider', '$locationProvider',
                             let favs = await services.get('shop', 'single_fav', $route.current.params.gameCod);
                             return favs;
                         }
-                    }/*,
-                    cart: function (services) {
-                        return services.post('cart', 'selectCart', { JWT: localStorage.token });
-                    }*/
+                    }
+                }// END_RESOLVE
+            }).when('/cart', {
+                templateUrl: "frontend/module/cart/view/view_cart.html",
+                controller: "controller_cart",
+                resolve: {
+                    games: async function () {
+                        if(localStorage.cartGames){
+                            data = JSON.parse(localStorage.cartGames);
+                            return data;
+                        }
+                    }
                 }// END_RESOLVE
             })
                 /*.when("/contact", {
@@ -194,14 +209,6 @@ wolfgames.config(['$routeProvider', '$locationProvider',
                             return services.post('profile', 'sendUserFavs', {JWT: localStorage.token});
                         }// end_userFavs
                     }// end_resolve
-                }).when("/cart", {
-                    templateUrl: "frontend/module/cart/view/view_cart.html",
-                    controller: "controller_cart",
-                    resolve: {
-                        dataCart: function(services) {
-                            return services.post('cart', 'loadDataCart', {JWT: localStorage.token});
-                        }
-                    }
                 }).when("/admin", {
                     templateUrl: "frontend/module/crud/view/view_crud.html",
                     controller: "controller_crud",

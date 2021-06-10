@@ -1,0 +1,95 @@
+<div class="cart-page">
+    <div id="cart-products" class="container">
+        <!-- SHOP PAGE -->
+        <div class="cart-content">
+            <div class="container mb-4">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="navbar-buttons btn-group back-to-shop" style="text-align: center;
+                        vertical-align: middle;
+                        line-height: 90px;" ng-show="{{games == null}}">
+                            <h1>
+                                <a class="custom-button btn btn-lg btn-block btn-success text-uppercase" href="#/shop">
+                                    TU CARRO ESTA VACIO, VISITA SHOP
+                                </a>
+                            </h1>
+                        </div>
+                        <div ng-show="{{games}}">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th class="col-7">Product</th>
+                                        <th class="col-2">Quantity</th>
+                                        <th class="col-2" style="text-align: right;">Price</th>
+                                        <th class="col-1"> </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="game in games">
+                                        <td>
+                                            <img style="width: 10%;"
+                                                ng-src="/angularjs_php/frontend/view/img/games/{{game.gameImg}}" />
+                                            <span style="font-weight:bold;"> {{game.gameName}}</span>
+                                        </td>
+                                        <td>
+                                            <div class="input-group" style="width: 150px !important;">
+                                                <span class="input-group-btn">
+                                                    <button type="button" class="btn btn-danger btn-number"
+                                                        ng-click="game.quantity = qty(-1, game.quantity); updateCart()">
+                                                        <span class="fa fa-minus"></span>
+                                                    </button>
+                                                </span>
+
+                                                <input style="text-align: center; width: 20px !important;"
+                                                    ng-change="game.quantity = limit(game.quantity); updateCart()"
+                                                    type="number" name="quantity" class="form-control valid-number"
+                                                    allow-decimal="false" allow-negative="false"
+                                                    ng-model="game.quantity">
+
+                                                <span class="input-group-btn">
+                                                    <button type="button" class="btn btn-success btn-number"
+                                                        ng-click="game.quantity = qty(1, game.quantity); updateCart()">
+                                                        <span class="fa fa-plus"></span>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td style="text-align: right;">
+                                            {{(game.price * game.quantity).toFixed(2)}}€
+                                        </td>
+                                        <td style="text-align: right;">
+                                            <button class="btn btn-sm btn-danger" ng-click="removeGame(game)">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td class="col-3">
+                                            <a class="custom-button btn btn-block" href="#/shop">Continue Shopping</a>
+                                        </td>
+                                        <td class="col-6 right">
+                                            <button class="custom-button back-to-shop btn btn-block btn-success text-uppercase"
+                                                ng-click="checkOut()">
+                                                Checkout
+                                            </button>
+                                        </td>
+                                        <td class="col-2 text-right">
+                                            <h3>TOTAL: </h3>
+                                        </td>
+                                        <td class="col-1">
+                                            <h4 style="font-weight: normal;">
+                                                {{total().toFixed(2)}}€
+                                            </h4>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

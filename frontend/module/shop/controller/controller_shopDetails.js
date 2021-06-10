@@ -1,4 +1,4 @@
-wolfgames.controller('controller_shopDetails', function($scope, game, fav, CommonService, $route) {
+wolfgames.controller('controller_shopDetails', function($scope, game, fav, CommonService, $route, $rootScope) {
     $scope.data = game;
     console.log(fav)
     
@@ -9,5 +9,16 @@ wolfgames.controller('controller_shopDetails', function($scope, game, fav, Commo
         CommonService.favs(gameCod);
         $route.reload();
     };
-    /*$scope.cart = services_shop.setArray(cart);*/
+
+    $scope.addToCart = function (game) {
+        game = {
+            'gameCod': game['gameCod'],
+            'gameImg': game['gameImg'],
+            'gameName': game['gameName'],
+            'quantity': 1,
+            'price': game['price']
+        }
+        CommonService.addGame(game);
+        $rootScope.cartTotal = JSON.parse(localStorage.cartGames).length
+    };
 });

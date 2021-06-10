@@ -28,6 +28,7 @@ wolfgames.controller('controller_login', function ($scope, $route, $uibModalInst
                     toastr.success('Welcome ' + data.user);
                     $scope.closeModal();
                     $route.reload();
+                    CommonService.userCart();
                 } else {
                     toastr.error("Error: This account doesn't exist.");
                 }

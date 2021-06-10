@@ -1,4 +1,4 @@
-wolfgames.controller('controller_shop', function ($scope, $routeParams, $route, games, CommonService, favs) {
+wolfgames.controller('controller_shop', function ($scope, $routeParams, $route, games, CommonService, favs, toastr, $rootScope) {
 
     //-----[VARS DECLARATIONS]-----\\
     var arrGames = games.games;
@@ -154,21 +154,42 @@ wolfgames.controller('controller_shop', function ($scope, $routeParams, $route, 
         CommonService.favs(gameCod);
         $route.reload();
     };
+
+    //----------[FUNCTION TO ADD INTO THE CART]----------\\
+    $scope.addToCart = function (game) {
+        game = {
+            'gameCod': game['gameCod'],
+            'gameImg': game['gameImg'],
+            'gameName': game['gameName'],
+            'quantity': 1,
+            'price': game['price']
+        }
+        CommonService.addGame(game);
+        $rootScope.cartTotal = JSON.parse(localStorage.cartGames).length
+    };
 });
 
-wolfgames.controller('details_controller', function ($scope, gameDetails, $uibModalInstance, CommonService, fav, $route) {
+wolfgames.controller('details_controller', function ($scope, gameDetails, $uibModalInstance, CommonService, fav, $rootScope) {
 
     $scope.data = gameDetails;
     if(fav){
         $scope.data.fav = true;
     }
 
-    $scope.fav = function (gameCod) {
-        CommonService.favs(gameCod);
-        $route.reload();
-    };
-
     $scope.closeModal = function () {
         $uibModalInstance.dismiss('cancel');
+    };
+
+    //----------[FUNCTION TO ADD INTO THE CART]----------\\
+    $scope.addToCart = function (game) {
+        game = {
+            'gameCod': game['gameCod'],
+            'gameImg': game['gameImg'],
+            'gameName': game['gameName'],
+            'quantity': 1,
+            'price': game['price']
+        }
+        CommonService.addGame(game);
+        $rootScope.cartTotal = JSON.parse(localStorage.cartGames).length
     };
 });

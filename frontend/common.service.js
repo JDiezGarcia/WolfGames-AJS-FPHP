@@ -4,6 +4,8 @@ wolfgames.factory("CommonService", ['services', '$uibModal', '$cookies', 'toastr
     var service = {};
     service.openModal = openModal;
     service.favs = favs;
+    service.addGame = addGame;
+    service.userCart = userCart;
     return service;
 
     //----------------[MODAL INSTANCE]---------------\\
@@ -19,8 +21,8 @@ wolfgames.factory("CommonService", ['services', '$uibModal', '$cookies', 'toastr
                             givenData = await services.get(module, funct, data);
                             return givenData;
                         },
-                        fav: async function (services){
-                            if($cookies.get('sessionToken')){
+                        fav: async function (services) {
+                            if ($cookies.get('sessionToken')) {
                                 givenData = await services.get('shop', 'single_fav', data);
                                 return givenData;
                             }
@@ -59,5 +61,47 @@ wolfgames.factory("CommonService", ['services', '$uibModal', '$cookies', 'toastr
             openModal('null', 'log', 'login', 'controller_login');
         }
     }
-    //------(Update: Guardar en array e enviar cuando haya 'X' o cambio de pagina y hacer la animacion like dislike)-----\\
+
+    //------------[ADD A GAME TO CART ]--------------\\
+    function addGame(game) {
+        if (localStorage.cartGames) {
+            let cartList = JSON.parse(localStorage.cartGames);
+            let newCart = [];
+            let i = 0;
+            let match = false;
+            let quantity = game.quantity;
+            while (cartList[i]) {
+                if (cartList[i]['gameCod'] === game['gameCod']) {
+                    game.quantity += cartList[i].quantity;
+                    newCart.push(game);
+                    toastr.success(quantity+' more '+game['gameName']+' added to the cart');
+                    match = true;
+                } else {
+                    newCart.push(cartList[i]);
+                }
+                i++
+            }
+            if (!match) {
+                newCart.push(game);
+                toastr.success('The game '+game['gameName']+' added to the cart')
+            }
+            localStorage.cartGames = JSON.stringify(newCart);
+        } else {
+            let arr = [];
+            arr.push(game);
+            toastr.success('The game '+game['gameName']+' added to the cart')
+            localStorage.cartGames = JSON.stringify(arr);
+        }
+    }
+
+    //---------[LOAD THE CART FROM THE SERVER]---------\\
+    function userCart() {
+        services.get('cart', 'list').then(function (data) {
+            games = data;
+            for (let i = 0; i < games.length; i++) {
+                addGame(games[i]);
+            }
+        });
+    }
+
 }]);

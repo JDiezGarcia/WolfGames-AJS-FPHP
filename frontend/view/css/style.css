@@ -5,7 +5,6 @@
     font-style: italic;
 }
 
-
 body {
     background-color: #F0F0FF;
     background-attachment: fixed;
@@ -24,13 +23,15 @@ h1 {
 
 #header {
     background-repeat: no-repeat;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 }
 
 #contenido {
     padding: 20px;
 }
+
 /*CRUD SECCION*/
+
 .Button_green {
     background-color: green;
     -moz-border-radius: 28px;
@@ -111,21 +112,26 @@ h1 {
 }
 
 /*Product Carousel*/
-.product{
+
+.product {
     cursor: pointer;
     margin-bottom: 10px;
     margin-top: 10px;
 }
+
 .product:hover {
     transform: scale(1.1);
 }
-.carousel-control-prev-icon, .carousel-control-next-icon{
+
+.carousel-control-prev-icon, .carousel-control-next-icon {
     background-color: black;
     pointer-events: all;
 }
-.carousel-control-prev, .carousel-control-next{
+
+.carousel-control-prev, .carousel-control-next {
     pointer-events: none;
 }
+
 /*CATEGORIES IMG*/
 
 .categories {
@@ -153,6 +159,7 @@ h1 {
 }
 
 /*Product List*/
+
 body {
     background: #eee;
 }
@@ -236,25 +243,21 @@ body {
         top: 30%;
         left: 30%;
     }
-
     25% {
         opacity: 1;
         left: 26%;
         top: 0%;
     }
-
     50% {
         opacity: 1;
         left: 23%;
         top: -22%;
     }
-
     75% {
         opacity: 1;
         left: 19%;
         top: -18%;
     }
-
     100% {
         opacity: 1;
         left: 14%;
@@ -278,64 +281,66 @@ body {
 }
 
 /*ADD FROM CARDS*/
+
 .detail {
     font-size: 80%;
     color: black !important;
 }
+
 .product-shop span {
     color: #6699cc;
 }
+
 .game-name {
     font-size: 120%;
-
 }
 
 .product-shop {
     margin-bottom: 30px;
-
 }
 
 .product-shop:hover {
     margin-bottom: 30px;
-
 }
 
-.button-card{
-    background-color:#66A6DB!important;
+.button-card {
+    background-color: #66A6DB!important;
     border-color: grey!important;
     margin: 1px;
     width: 30%!important;
     box-shadow: none!important;
 }
 
-.button-card:hover{
-    background-color:#2b89d6!important;
+.button-card:hover {
+    background-color: #2b89d6!important;
 }
+
 #search-container .card ul li:hover {
     background-color: #ededed;
 }
+
 /*GRID CSS*/
 
 .colP {
-grid-area: main;
+    grid-area: main;
 }
+
 .colF {
-grid-area: sidebar;
+    grid-area: sidebar;
 }
 
 .shop-content {
-display: grid;
-grid-template-columns: 20% 80%;
-grid-template-rows: auto;
-grid-template-areas: 
-  
-    "sidebar main"
-
+    display: grid;
+    grid-template-columns: 20% 80%;
+    grid-template-rows: auto;
+    grid-template-areas: "sidebar main"
 }
 
 /*MAPS GEO*/
+
 /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
+
 #map {
     height: 50vh;
 }
@@ -347,7 +352,7 @@ grid-template-areas:
     margin: 0;
     padding: 0;
 }*/
-      
+
 .custom-map-control-button {
     appearance: button;
     background-color: #fff;
@@ -361,229 +366,265 @@ grid-template-areas:
     font: 400 18px Roboto, Arial, sans-serif;
     overflow: hidden;
 }
+
 .custom-map-control-button:hover {
     background: #ebebeb;
 }
 
 /* FOOTER*/
-.footer{
+
+.footer {
     max-width: 100% !important;
     min-width: 100% !important;
-	background-color:#CCCCCC;
-	font-family:sans-ser;
-}
-#links {
-	text-decoration:none;
-	color:black;
-	font-family: Arial;
-	overflow:hidden;
-	text-align:center;
-	text-shadow:0 0 5px grey;
-	}
-#links:hover{
-	text-shadow:0 0 0px grey;
+    background-color: #CCCCCC;
+    font-family: sans-ser;
 }
 
-.footer input{
-	height:34px;
-	width:65%;
-	background-color:#FFF;
-	color:#000;
-	font-family:arial;
-	}
-.footer button{
-	font-family:arial;
-    text-shadow:0 0 5px #000000;
-	margin-top:5px;}
+#links {
+    text-decoration: none;
+    color: black;
+    font-family: Arial;
+    overflow: hidden;
+    text-align: center;
+    text-shadow: 0 0 5px grey;
+}
+
+#links:hover {
+    text-shadow: 0 0 0px grey;
+}
+
+.footer input {
+    height: 34px;
+    width: 65%;
+    background-color: #FFF;
+    color: #000;
+    font-family: arial;
+}
+
+.footer button {
+    font-family: arial;
+    text-shadow: 0 0 5px #000000;
+    margin-top: 5px;
+}
 
 .footer .fa {
-  font-size: 30px;
-  width: 55px;
-  text-align: center;
-  text-decoration: none;
-  border-radius:50%;
+    font-size: 30px;
+    width: 55px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 50%;
 }
 
 .footer .fa:hover {
-	border-radius:1px solid #fff;
+    border-radius: 1px solid #fff;
 }
 
 .footer .fa-facebook {
-  color: black;
-  text-shadow:0 0 9px grey;
+    color: black;
+    text-shadow: 0 0 9px grey;
 }
-.footer .fa-facebook:hover{
-  background: #3B5998;
-  color: black;
+
+.footer .fa-facebook:hover {
+    background: #3B5998;
+    color: black;
 }
+
 .footer .fa-twitter {
     color: black;
-  text-shadow:0 0 10px grey;
+    text-shadow: 0 0 10px grey;
+}
 
+.footer .fa-twitter:hover {
+    background: #55ACEE;
+    color: black;
 }
-.footer .fa-twitter:hover{
-  background: #55ACEE;
-  color: black;
-}
+
 .footer .fa-linkedin {
     color: black;
-  text-shadow:0 0 9px grey;
+    text-shadow: 0 0 9px grey;
 }
-.footer .fa-linkedin:hover{
-  background: #007bb5;
-  color: black;
+
+.footer .fa-linkedin:hover {
+    background: #007bb5;
+    color: black;
 }
 
 .footer .fa-youtube {
     color: black;
-  text-shadow:0 0 10px grey;
+    text-shadow: 0 0 10px grey;
 }
-.footer .fa-youtube:hover{
-  background: #bb0000;
-  color: black;
+
+.footer .fa-youtube:hover {
+    background: #bb0000;
+    color: black;
 }
+
 .footer .fa-pinterest {
     color: black;
-  text-shadow:0 0 9px grey;
-}
-.footer .fa-pinterest:hover{
-  background: #cb2027;
-  color: black;
+    text-shadow: 0 0 9px grey;
 }
 
-#bottom-line{
-	height:1px;
-	background-color:#f1f1f1;}
+.footer .fa-pinterest:hover {
+    background: #cb2027;
+    color: black;
+}
+
+#bottom-line {
+    height: 1px;
+    background-color: #f1f1f1;
+}
 
 /*FOOTER: CONTACT*/
-#form{
-	margin-top:100px;
-}
-#mainform{
-	background-color:#fff;
-	border:px solid #f1f1f1;
-	height:auto;
-	opacity:.7;
-	animation-name:form;
-	animation-duration:1s;
-	transition:ease-in-out .3s;}
-@keyframes form{
-	0%{ opacity:0;}
-	100%{}
+
+#form {
+    margin-top: 100px;
 }
 
-#mainform:hover{
-	box-shadow:0 0 20px #CCCCCC;
-	opacity:1;
-	}
+#mainform {
+    background-color: #fff;
+    border: px solid #f1f1f1;
+    height: auto;
+    opacity: .7;
+    animation-name: form;
+    animation-duration: 1s;
+    transition: ease-in-out .3s;
+}
+
+@keyframes form {
+    0% {
+        opacity: 0;
+    }
+    100% {}
+}
+
+#mainform:hover {
+    box-shadow: 0 0 20px #CCCCCC;
+    opacity: 1;
+}
+
 footer .fa {
-  font-size: 60px;
-  text-align: center;
-  text-decoration: none;
-  border-radius:50%;
+    font-size: 60px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 50%;
 }
 
 footer .fa:hover {
-	border-radius:1px solid #fff;
+    border-radius: 1px solid #fff;
 }
 
 footer .fa-facebook {
-  color: black;
-  text-shadow:0 0 5px grey;
+    color: black;
+    text-shadow: 0 0 5px grey;
 }
-footer .fa-facebook:hover{
-  background: #3B5998;
-  color: black;
-  text-decoration:none;
+
+footer .fa-facebook:hover {
+    background: #3B5998;
+    color: black;
+    text-decoration: none;
 }
-	
+
 footer .fa-twitter {
-  color: black;
-  text-shadow:0 0 5px grey;
-  text-decoration:none;
+    color: black;
+    text-shadow: 0 0 5px grey;
+    text-decoration: none;
 }
-footer .fa-twitter:hover{
-  background: #55ACEE;
-  color: white;
-  text-decoration:none;
+
+footer .fa-twitter:hover {
+    background: #55ACEE;
+    color: white;
+    text-decoration: none;
 }
 
 footer .fa-youtube {
-  color: black;
-  text-shadow:0 0 5px grey;
-}
-footer .fa-youtube:hover{
-  background: #bb0000;
-  color: black;
+    color: black;
+    text-shadow: 0 0 5px grey;
 }
 
-#mail{
-	border-radius:50%;
-	height:40px;
-	}
-#mail:hover{
-	box-shadow:0 0 2px grey;
-	}
-#phone{
-	border-radius:50%;
-	height:40px;
-
-}
-#phone:hover{
-	box-shadow:0 0 2px grey;
+footer .fa-youtube:hover {
+    background: #bb0000;
+    color: black;
 }
 
-.contact-us{
-	animation-name:contact-us;
-	animation-duration:1s;
-	}
+#mail {
+    border-radius: 50%;
+    height: 40px;
+}
+
+#mail:hover {
+    box-shadow: 0 0 2px grey;
+}
+
+#phone {
+    border-radius: 50%;
+    height: 40px;
+}
+
+#phone:hover {
+    box-shadow: 0 0 2px grey;
+}
+
+.contact-us {
+    animation-name: contact-us;
+    animation-duration: 1s;
+}
 
 /*NAVBAR*/
-#header button{
-    color: white;
-    border-color: grey;
-    background-color: grey;
-    box-shadow: none;
+.custom-button{
+    color: white !important;
+    border-color: grey !important;
+    background-color: grey !important;
+    box-shadow: none !important;
 }
 
-#header button:hover{
-    color: grey;
-    border-color: grey;
-    background-color: white;
+.custom-button:hover{
+    color: grey!important;
+    border-color: grey!important;
+    background-color: white!important;
 }
 
+.back-to-shop{
+    align-content: center!important; 
+    display: block!important; 
+    margin-left: auto!important; 
+    margin-right: auto!important;
+}
 /*MODAL LOGIN*/
 
-  @media (min-width: 576px) {
-
+@media (min-width: 576px) {
     .modal-header .close {
         margin-top: -1.5rem;
     }
-    
     .form-title {
         margin: -2rem 0rem 2rem;
     }
-    
     .btn-round {
         border-radius: 3rem;
     }
-    
     .delimiter {
         padding: 1rem;
     }
-    
     .social-buttons .btn {
         margin: 0 0.5rem 1rem;
     }
-    
     .signup-section {
         padding: 0.3rem 0rem;
     }
     .btn-close {
         background-color: white !important;
     }
-  }
-  .grey-backdrop.modal-backdrop {
-    background-color:grey;
+}
+
+.grey-backdrop.modal-backdrop {
+    background-color: grey;
     opacity: 0.4 !important;
-  }
+}
+
+input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}

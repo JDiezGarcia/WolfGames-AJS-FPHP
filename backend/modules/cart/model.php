@@ -11,7 +11,7 @@ class CartModel extends Model {
                 if ($i != 0) {
                     $sql.= ",";
                 }
-                $sql.= "($order, '{$game['gameCod']}', {$game['qty']})";
+                $sql.= "($order, '{$game['gameCod']}', {$game['quantity']})";
             }
             $sql.=" ON DUPLICATE KEY UPDATE quantity = values(quantity)";
             $this->db->query($sql);
