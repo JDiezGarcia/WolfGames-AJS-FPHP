@@ -5,14 +5,13 @@ use Utils\res;
 class HomeController extends Controller {
 
     public $middlewares = array(
-        "carousel_get" => array('json'),
-        "platforms_img_get" => array('json'),
         //"action" => array('middleware(jwt,json..)
     );
 
     // /home/carousel/0
     public function carousel_get() {
-        $carousel = $this->model->carousel(intval(Client::$uri[2]));
+        $offset = intval(Client::$uri[2]);
+        $carousel = $this->model->carousel($offset);
         res::ok($carousel);
     }
     // /shop/platforms/

@@ -18,8 +18,7 @@ class JWT {
         return _JWT::decode($token, self::$secret, array('HS256'));
     }
     public static function set_password($secret) {
-        self::$secret = $secret;
-        
+        self::$secret = $secret;   
     }
 }
 

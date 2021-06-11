@@ -285,3 +285,18 @@ BEGIN
 
     SELECT * FROM order_header WHERE userCod = user AND idOrder = orderCod ;
 END
+
+DELIMITER $$
+CREATE FUNCTION `verify`(`user` VARCHAR(50) RETURNS int(1)
+BEGIN
+	DECLARE userV VARCHAR(100);
+	IF EXISTS(SELECT * FROM users AS u WHERE u.email = user OR u.user = userV AND u.verify = 0 ) THEN
+        UPDATE `users` SET verify = 1 WHERE `user` = userV OR email = userV;
+        RETURN 0;
+  ELSEIF EXISTS(SELECT * FROM users AS u WHERE u.email = user OR u.user = userV AND u.verify = 1 ) THEN
+    	RETURN 1;
+  ELSE
+      RETURN 2;
+	END IF;
+END$$
+DELIMITER ;

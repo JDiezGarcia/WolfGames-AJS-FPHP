@@ -1,7 +1,4 @@
 <?php
-
-use Utils\res;
-
 class CartModel extends Model {
     function insert_lines($games, $user){
         try{
@@ -26,9 +23,15 @@ class CartModel extends Model {
         }
     }
 
+    function delete_lines($user) {
+        $order = $this->db->query("CALL selectHeader('$user')")->query->fetch_all(MYSQLI_ASSOC)[0];
+        $res = $this->db->query("DELETE FROM order_lines WHERE idOrder = {$order['idOrder']}");
+        return $res;
+    }
+
     function select_order($user) {			
         $order = $this->db->query("CALL selectHeader('$user')")->query->fetch_all(MYSQLI_ASSOC)[0];
-        $res = $this->db->query("CALL retrieveOrder('{$order['idOrder']}')")->query->fetch_all(MYSQLI_ASSOC);
+        $res = $this->db->query("CALL retrieveOrder({$order['idOrder']})")->query->fetch_all(MYSQLI_ASSOC);
         return $res;
     }
 

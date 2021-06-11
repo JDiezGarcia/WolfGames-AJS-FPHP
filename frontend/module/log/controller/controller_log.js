@@ -22,13 +22,15 @@ wolfgames.controller('controller_login', function ($scope, $route, $uibModalInst
         };
         services.post('log', 'userLog', user)
             .then(function (data) {
-                if (data) {
+                if (data == 2) {
+                    toastr.success("Se ha enviado un nuevo enlace a tu correo", "Verificacion");
+                } else if(data) {
                     localStorage.dataSession = JSON.stringify(data);
                     $rootScope.userProfile = data;
                     toastr.success('Welcome ' + data.user);
                     $scope.closeModal();
                     CommonService.userCart();
-                } else {
+                }else{
                     toastr.error("Error: This account doesn't exist.");
                 }
             }, function (error) {

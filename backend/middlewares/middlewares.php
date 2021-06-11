@@ -1,6 +1,7 @@
 <?php
 
 namespace Middleware;
+
 use Utils;
 use Utils\JWT;
 use BadReqException;
@@ -32,7 +33,7 @@ function json() { // Deault middleware
     Client::$data = $data;
 }
 
-function token_expiration() {
+function user_expiration() {
     $token = Utils\get_cookie('sessionToken');
     try {
         Client::$jwt_session = JWT::decode($token);
@@ -40,8 +41,20 @@ function token_expiration() {
         if (Client::$jwt_session->expires <= time()) {
             throw new BadReqException("The token is expire...");
         }
-    } catch(Exception $e) {
+    } catch (Exception $e) {
         throw new BadReqException("Invalid token");
+    }
+}
+
+function verify_expiration() {
+    try {
+        $token = Client::$data['token'];
+        $decode = JWT::decode($token);
+        if ($decode->expires <= time()) {
+            throw new BadReqException("The token is expire...");
+        }
+    } catch (Exception $e) {
+        Client::$status = "expired";
     }
 }
 
@@ -58,4 +71,3 @@ function token_expiration() {
     }
 }
 */
-?>

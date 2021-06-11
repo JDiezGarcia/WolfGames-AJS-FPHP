@@ -1,6 +1,7 @@
 <?php
 header('Content-Type: application/json; charset=utf-8');
 
+require_once 'mvc_lib/app.php';
 require_once 'utils/utils.php';
 
 $folders_to_include = array('mvc_lib', 'exceptions','utils','middlewares');

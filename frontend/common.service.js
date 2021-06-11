@@ -1,4 +1,4 @@
-wolfgames.factory("CommonService", ['$route','services', '$uibModal', '$cookies', 'toastr', function ($route, services, $uibModal, $cookies, toastr) {
+wolfgames.factory("CommonService", ['$route', 'services', '$uibModal', '$cookies', 'toastr', function ($route, services, $uibModal, $cookies, toastr) {
 
     //----------------[RETURN FUNCTION FROM SERVICES]-------------\\
     var service = {};
@@ -75,7 +75,7 @@ wolfgames.factory("CommonService", ['$route','services', '$uibModal', '$cookies'
                 if (cartList[i]['gameCod'] === game['gameCod']) {
                     game.quantity += cartList[i].quantity;
                     newCart.push(game);
-                    toastr.success(quantity+' more '+game['gameName']+' added to the cart');
+                    toastr.success(quantity + ' more ' + game['gameName'] + ' added to the cart');
                     match = true;
                 } else {
                     newCart.push(cartList[i]);
@@ -84,13 +84,13 @@ wolfgames.factory("CommonService", ['$route','services', '$uibModal', '$cookies'
             }
             if (!match) {
                 newCart.push(game);
-                toastr.success('The game '+game['gameName']+' added to the cart')
+                toastr.success('The game ' + game['gameName'] + ' added to the cart')
             }
             localStorage.cartGames = JSON.stringify(newCart);
         } else {
             let arr = [];
             arr.push(game);
-            toastr.success('The game '+game['gameName']+' added to the cart')
+            toastr.success('The game ' + game['gameName'] + ' added to the cart')
             localStorage.cartGames = JSON.stringify(arr);
         }
     }
@@ -98,25 +98,28 @@ wolfgames.factory("CommonService", ['$route','services', '$uibModal', '$cookies'
     //---------[LOAD THE CART FROM THE SERVER]---------\\
     function userCart() {
         services.get('cart', 'list')
-        .then(function (data) {
-            games = data;
-            if(games){
-                for (let i = 0; i < games.length; i++) {
-                    addGame(games[i]);
+            .then(function (data) {
+                games = data;
+                if (games) {
+                    for (let i = 0; i < games.length; i++) {
+                        addGame(games[i]);
+                    }
                 }
-            }
-            $route.reload();
-        });
+                $route.reload();
+            });
     }
 
     //-----------[UPDATE CART]----------\\
-    function updateCart(){
+    function updateCart() {
+        console.log("a");
         if ($cookies.get('sessionToken')) {
-            if(localStorage.cartGames){
+            if (localStorage.cartGames) {
                 let games = {
                     games: JSON.parse(localStorage.cartGames)
                 }
-            services.post('cart', 'insert_list', games);
+                services.post('cart', 'insert_list', games);
+            } else {
+                services.get('cart', 'delete_list');
             }
         }
     }

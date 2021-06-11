@@ -107,8 +107,11 @@ class App {
     }
     //Comprobar las funciones de cada controller
     private function call_middlewares($controller, $func) {
-        foreach ($controller->middlewares[$func] as $middleware_function) {
-            ("Middleware\\" . $middleware_function)();
+        $content = $controller->middlewares;
+        if (count($content) > 0){
+            foreach ($controller->middlewares[$func] as $middleware_function) {
+                ("Middleware\\" . $middleware_function)();
+            }
         }
     }
 }

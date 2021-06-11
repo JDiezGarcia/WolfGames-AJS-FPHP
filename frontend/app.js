@@ -81,7 +81,7 @@ wolfgames.config(['$routeProvider', '$locationProvider',
                 controller: "controller_home",
                 resolve: {
                     viewedGames: async function (services) {
-                        data = await services.get('home', 'carousel', 0);
+                        data = await services.get('home', 'carousel', '0');
                         return data;
                     },
                     allPlatforms: function (services) {
@@ -157,7 +157,7 @@ wolfgames.config(['$routeProvider', '$locationProvider',
                 controller: "controller_cart",
                 resolve: {
                     games: function ($cookies) {
-                        if(localStorage.cartGames){
+                        if (localStorage.cartGames) {
                             let data = JSON.parse(localStorage.cartGames);
                             if ($cookies.get('sessionToken')) {
                                 return data;
@@ -167,6 +167,31 @@ wolfgames.config(['$routeProvider', '$locationProvider',
                         }
                     }
                 }// END_RESOLVE
+            }).when("/verify", {
+                resolve: {
+                    activateUser: async function ($location, services, $route, toastr) {
+                        let data = {
+                            "user": $route.current.params.user,
+                            "token": $route.current.params.token
+                        }
+                        await services.post('log', 'verify_user', data)
+                            .then(function (response) {
+                                console.log(response);
+                                if (response.result == 0) {
+                                    toastr.success('Thank you for verifing your account.', 'Account verified:');
+                                } else if (response.result == 1) {
+                                    toastr.info('The user is already verify', 'Info:');
+                                } else {
+                                    toastr.error('The current token is invalid. Login to resend one', 'Warning:');
+                                }
+                            }, function (error) {
+                                toastr.error('The current token is invalid. Login to resend one');
+                            });
+                            $location.search('user', null);
+                            $location.search('token', null);
+                            $location.path('/home');
+                    },
+                }// end_resolve
             })
                 /*.when("/contact", {
                     templateUrl: "frontend/module/contact/view/view_contact.html", 
@@ -174,22 +199,6 @@ wolfgames.config(['$routeProvider', '$locationProvider',
                 }).when("/recover", {
                     templateUrl: "frontend/module/login/view/view_recover.html",
                     controller: "controller_recover"
-                }).when("/login/activate/:token", {
-                    resolve: {
-                        activateUser: function(services, $route, toastr) {
-                            services.put('login', 'validateEmail', {'token': $route.current.params.token})
-                            .then(function(response) {
-                                if (response == 1) {
-                                    toastr.success('Thank you for verifing your account.' ,'Account verified..');
-                                }else {
-                                    toastr.error('The current token is invalid.' ,'Error');
-                                }// end_else
-                                location.href = "#/login";
-                            }, function(error) {
-                                console.log(error);
-                            });// end_services
-                        }// end_activateUser
-                    }// end_resolve
                 }).when("/login/recover/:token", {
                     templateUrl: "frontend/module/login/view/view_recoverForm.html",
                     controller: "controller_recoverForm",

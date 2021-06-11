@@ -48,19 +48,19 @@ class MailJet {
         return $resp;
     }
 
-    public static function verify_accout($data){				
-        $message = preg_replace('/^\s*/g', '', <<<EOM
+    public static function verify_account($data, $email){				
+        $message = preg_replace('/^\s*/', '', <<<EOM
         Hello!
                             
-        You have requested to verify your email address on JJCars for {$data['user']['user']}.
+        Welcome {$data['user']} to WolfGames.
         Click on the following link to verify your account:
-        http://localhost:8080/api/auth/verify?uid={$data['user']['uid']}&token={$data['token']}
+        http://192.168.100.8:8080/angularjs_fphp/index.html#/verify?user={$data['user']}&token={$data['token']}
 
-        If you didn't request the verification you may safely ingore this email, the token expires in 6 hours.
-                            
-        -- JJCars
+        The token expires in 1 hour.
+                
+        -- WolfGames.
         EOM);
-				$mailer->send_mail($data['user']['email'], 'Mail verification', $message);
+				MailJet::send_message($email, 'Verification Account', $message);
     }
 }
 

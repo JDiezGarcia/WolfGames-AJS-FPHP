@@ -6,9 +6,9 @@ class ShopController extends Controller {
 
     public $middlewares = array(
         "products_post" => array('json'),
-        "multi_fav_get" => array('token_expiration'),
-        "single_fav_get" => array('token_expiration'),
-        "fav_action_get" => array('token_expiration')
+        "multi_fav_get" => array('user_expiration'),
+        "single_fav_get" => array('user_expiration'),
+        "fav_action_get" => array('user_expiration')
         //"action" => array('middleware(jwt,json..)
     );
 
