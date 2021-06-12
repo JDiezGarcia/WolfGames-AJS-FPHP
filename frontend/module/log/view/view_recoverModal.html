@@ -1,0 +1,95 @@
+<div class="modal-header border-bottom-0">
+    <button type="button" class="btn-close" data-bs-dismiss="modal" ng-click="closeModal()" aria-label="Close"></button>
+</div>
+<div class="modal-body">
+    <div class="form-title text-center">
+        <h4 data-tr="login">Recover Password</h4>
+    </div>
+    <div class="d-flex flex-column text-center">
+        <!--LOGIN-FORM-->
+        <form name="recoverAsk" ng-show="recoverInfo != true">
+            <!--USERNAME-->
+            <div class="form-group">
+                <!--INPUT-->
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <i class="fa fa-user input-group-text"></i>
+                    </div>
+                    <input type="user" class="form-control" ng-model="user" placeholder="Username/email@email.com"
+                        name="user" ng-minlength="4" ng-maxlength="20" ng-pattern="regUser" required
+                        ng-class="{'invalid-input': recoverAsk.user.$dirty && recoverAsk.user.$invalid }">
+                </div>
+                <!--VALIDATION-->
+                <div class="text-danger" role="alert" class="error-message" ng-messages="recoverAsk.user.$error"
+                    ng-show="recoverAsk.user.$dirty">
+                    <p ng-message="required">This field is required</p>
+                    <p ng-message="pattern">The field is invalid need to be a user or email</p>
+                    <p ng-message="minlength">This field needs to be min 4 characters</p>
+                    <p ng-message="maxlength">This field need to be max 20 characters</p>
+                </div>
+            </div>
+            <!--SUBMIT-->
+            <button type="button" class="btn btn-info btn-block btn-round" id="send-success-button" data-tr="recover-ask"
+                ng-disabled="recoverAsk.$invalid" type="submit" ng-click="sendRecover()">Send</button>
+        </form>
+
+        <form name="recoverSend" ng-show="recoverInfo == true">
+            <div class="form-group">
+                <!--INPUT-->
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <i class="fa fa-key input-group-text"></i>
+                    </div>
+                    <input type="text" class="form-control" ng-model="codeKey" placeholder="Place code from the Email"
+                        name="codeKey" required ng-change="checkKey()"  ng-class="{'invalid-input': recoverSend.codeKey.$dirty && recoverSend.codeKey.$invalid }">
+                    <button class="btn btn-info btn-block btn-round" ng-click="checkKey()">Check</button>
+                </div>
+                <!--VALIDATION-->
+                <div class="text-danger" role="alert" class="error-message" ng-messages="recoverSend.codeKey.$error"
+                    ng-show="recoverSend.codeKey.$dirty">
+                    <p ng-message="required">This field is required</p>
+                    <p ng-message="verify">The token is invalid</p>
+                </div>
+            </div>
+            
+            <!--PASSWORD-->
+            <div class="form-group">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <i class="fa fa-lock input-group-text"></i>
+                    </div>
+                    <input type="password" class="form-control" ng-model="password" placeholder="Password"
+                        name="password" ng-minlength="4" ng-maxlength="20" ng-pattern="regPass" ng-disabled="recoverSend.codeKey.$invalid" required
+                        ng-class="{'invalid-input': recoverSend.password.$dirty && recoverSend.password.$invalid }">
+
+                    <input type="password" class="form-control" ng-model="rePassword" placeholder="Repeat Password"
+                        name="rePassword" ng-minlength="4" ng-maxlength="20" ng-pattern="regPass" ng-disabled="recoverSend.codeKey.$invalid" required
+                        ng-change="setMatchError(recoverSend.password, recoverSend.rePassword)"
+                        ng-class="{'invalid-input': recoverSend.rePassword.$dirty && recoverSend.rePassword.$invalid }">
+                </div>
+
+                <!--VALIDATION-->
+                <div class="text-danger error-message" role="alert" ng-messages="recoverSend.password.$error"
+                    ng-show="recoverSend.password.$dirty">
+                    <p ng-message="required">This field is required</p>
+                    <p ng-message="pattern">You need lowercase, uppercase, numbers and special characters</p>
+                    <p ng-message="minlength">This field needs to be min 4 characters</p>
+                    <p ng-message="maxlength">This field need to be max 20 characters</p>
+                </div>
+                <div class="text-danger error-message" role="alert" ng-messages="recoverSend.rePassword.$error"
+                    ng-show="recoverSend.rePassword.$dirty">
+                    <p ng-message="required">This field is required</p>
+                    <p ng-message="pattern">You need lowercase, uppercase, numbers and special characters</p>
+                    <p ng-message="match">The passwords doesn't match</p>
+                    <p ng-message="minlength">This field needs to be min 4 characters</p>
+                    <p ng-message="maxlength">This field need to be max 20 characters</p>
+                </div>
+            </div>
+            <!--SUBMIT-->
+            <button type="button" class="btn btn-info btn-block btn-round" id="recover-success-button" data-tr="recover"
+                ng-disabled="recoverSend.codeKey.$invalid || recoverSend.rePassword.$invalid" type="submit" ng-click="sendChange()">Recover</button>
+        </form>
+    </div>
+</div>
+<div class="modal-footer d-flex justify-content-center">
+</div>

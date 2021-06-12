@@ -30,13 +30,19 @@
             </div>
             <!--PASSWORD-->
             <div class="form-group">
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <i class="fa fa-lock input-group-text"></i>
+                <div class="mb-3">
+                    <div class="input-group mb-1">
+                        <div class="input-group-prepend">
+                            <i class="fa fa-lock input-group-text"></i>
+                        </div>
+                        <input type="password" class="form-control" ng-model="password" placeholder="Password"
+                            name="password" ng-minlength="4" ng-maxlength="20" ng-pattern="regPass" required
+                            ng-class="{'invalid-input': loginForm.password.$dirty && loginForm.password.$invalid }">
                     </div>
-                    <input type="password" class="form-control" ng-model="password" placeholder="Password"
-                        name="password" ng-minlength="4" ng-maxlength="20" ng-pattern="regPass" required
-                        ng-class="{'invalid-input': loginForm.password.$dirty && loginForm.password.$invalid }">
+                    <span style="font-size: 12px;" >
+                        Don't remeber the password? 
+                        <a ng-click="closeModal(); recoverPassModal();"  style="cursor:pointer;" class="text-info">Click here!</a>
+                    </span>
                 </div>
 
                 <!--VALIDATION-->
@@ -50,16 +56,17 @@
             </div>
             <!--SUBMIT-->
             <button type="button" class="btn btn-info btn-block btn-round" id="log-success-button" data-tr="login"
-                ng-disabled="loginForm.$invalid" type="submit"
-                ng-click="login()">Login</button>
+                ng-disabled="loginForm.$invalid" type="submit" ng-click="login()">Login</button>
         </form>
         <!--SOCIAL-LOGIN-->
         <div class="text-center text-muted delimiter" data-tr="social-log">Social Login</div>
         <div class="d-flex justify-content-center social-buttons">
-            <button type="button" class="btn btn-secondary btn-round" data-placement="top" title="Github">
+            <button type="button" class="btn btn-secondary btn-round" ng-click="githubSign()" data-placement="top"
+                title="Github">
                 <i class="fa fa-github"></i>
             </button>
-            <button type="button" class="btn btn-secondary btn-round" data-placement="top" title="Google">
+            <button type="button" class="btn btn-secondary btn-round" ng-click="googleSign()" data-placement="top"
+                title="Google">
                 <i class="fa fa-google"></i>
             </button>
         </div>

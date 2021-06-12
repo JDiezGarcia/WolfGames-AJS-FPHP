@@ -192,7 +192,18 @@ wolfgames.config(['$routeProvider', '$locationProvider',
                             $location.path('/home');
                     },
                 }// end_resolve
-            })
+            }).when("/recover", {
+                controller: "controller_recover",
+                resolve: {
+                    changePass: async function ($route) {
+                        let data = {
+                            "user": $route.current.params.user,
+                            "token": $route.current.params.token
+                        }
+                        return data;
+                    }
+                }
+            })// end_reso
                 /*.when("/contact", {
                     templateUrl: "frontend/module/contact/view/view_contact.html", 
                     controller: "controller_contact"

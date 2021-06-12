@@ -18,6 +18,24 @@ wolfgames.factory("services", ['$http', '$q', function ($http, $q) {
     };
     //api/home/carousel
     //data: data
+    obj.json = function (key, file, url) {
+        var defered = $q.defer();
+        var promise = defered.promise;
+        
+        $http({
+            method: 'GET',
+            url: url + file,
+            dataType: 'json',
+            contentType: "application/json"
+        }).success(function (data) {
+            console.log(data[key])
+            defered.resolve(data[key]);
+        }).error(function (data) {
+            defered.reject(data.error);
+        });
+        return promise;
+    };
+    
     obj.post = function (module, action, data = {}) {
         var defered = $q.defer();
         var promise = defered.promise;
@@ -32,7 +50,7 @@ wolfgames.factory("services", ['$http', '$q', function ($http, $q) {
             defered.reject(data.error);
         });
         return promise;
-    }; 
+    };
 
     obj.put = function (module, functi, dada) {
         var defered = $q.defer();

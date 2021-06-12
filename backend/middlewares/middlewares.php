@@ -46,7 +46,7 @@ function user_expiration() {
     }
 }
 
-function verify_expiration() {
+function token_expiration() {
     try {
         $token = Client::$data['token'];
         $decode = JWT::decode($token);

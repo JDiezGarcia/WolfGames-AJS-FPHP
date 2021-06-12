@@ -300,3 +300,27 @@ BEGIN
 	END IF;
 END$$
 DELIMITER ;
+
+
+DELIMITER $$
+CREATE FUNCTION `recover`(`userV` VARCHAR(50)) RETURNS int(1)
+BEGIN
+    IF EXISTS(SELECT * FROM users AS u WHERE u.email = userV OR u.user = userV AND u.userCod LIKE 'LOCAL%') THEN
+        RETURN SELECT u.user, u.email, FROM users AS u WHERE u.email = userV OR u.user = userV AND u.userCod;
+    ELSE
+        RETURN 1;
+    END IF;
+END$$
+
+DELIMITER $$
+CREATE FUNCTION `changePass`(`userC` VARCHAR(50), `passC` VARCHAR(50) )
+RETURNS int(1)
+BEGIN
+	IF EXISTS(SELECT * FROM users AS u WHERE u.email = userC OR u.user = userC) THEN
+        UPDATE `users` SET pass = passC WHERE `user` = userC OR email = userC;
+        RETURN 0;
+    ELSE
+        RETURN 1;
+	END IF;
+END$$
+DELIMITER ;

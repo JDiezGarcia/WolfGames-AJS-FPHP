@@ -32,4 +32,15 @@ class LogModel extends Model {
         $res = $this->db->query($sql)->query->fetch_all(MYSQLI_ASSOC)[0];
         return $res;
     }
+
+    function recover_pass($user) {
+        $res = $this->db->query("CALL recover('$user')")->query->fetch_all(MYSQLI_ASSOC)[0];
+        return $res;
+    }
+
+    function change_pass($user, $pass) {
+        $sql = "SELECT changePass('$user', '$pass') AS result";
+        $res = $this->db->query($sql)->query->fetch_all(MYSQLI_ASSOC)[0];
+        return $res;
+    }
 }

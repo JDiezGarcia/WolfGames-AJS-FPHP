@@ -205,7 +205,7 @@
             </div>
 
             <button type="button" class="btn btn-info btn-block btn-round" id="register-success-button"
-                data-tr="register" ng-disabled="registerForm.$invalid" type="submit"
+                data-tr="register" ng-disabled="registerForm.$invalid || registerForm.rePassword.$invalid" type="submit"
                 ng-click="register()">Register</button>
         </form>
     </div>

@@ -56,11 +56,27 @@ class MailJet {
         Click on the following link to verify your account:
         http://192.168.100.8:8080/angularjs_fphp/index.html#/verify?user={$data['user']}&token={$data['token']}
 
-        The token expires in 1 hour.
+        The token expires in 10 min.
                 
         -- WolfGames.
         EOM);
 				MailJet::send_message($email, 'Verification Account', $message);
+    }
+
+    public static function recover_pass($data, $email){				
+        $message = preg_replace('/^\s*/', '', <<<EOM
+        Hello!
+                            
+        {$data['user']} we send you a recover password link.
+        Copy on the field CODE the following code to restore your password:
+        
+        CODE: {$data['token']}
+
+        The token expires in 10 min.
+                
+        -- WolfGames.
+        EOM);
+				MailJet::send_message($email, 'Recover Password', $message);
     }
 }
 
