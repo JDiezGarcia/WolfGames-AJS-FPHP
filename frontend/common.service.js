@@ -111,7 +111,6 @@ wolfgames.factory("CommonService", ['$route', 'services', '$uibModal', '$cookies
 
     //-----------[UPDATE CART]----------\\
     function updateCart() {
-        console.log("a");
         if ($cookies.get('sessionToken')) {
             if (localStorage.cartGames) {
                 let games = {

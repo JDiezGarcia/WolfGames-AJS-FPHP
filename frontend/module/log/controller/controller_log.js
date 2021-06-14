@@ -1,4 +1,4 @@
-wolfgames.controller('controller_login', function ($scope, $route, $uibModalInstance, services, CommonService, toastr, $rootScope, services_Google, services_GitHub) {
+wolfgames.controller('controller_login', function ($scope, $uibModalInstance, services, CommonService, toastr, $rootScope, GoogleServices, GitHubServices) {
 
     //-------[MODAl ACTIONS]-------\\
     $scope.closeModal = function () {
@@ -27,6 +27,7 @@ wolfgames.controller('controller_login', function ($scope, $route, $uibModalInst
                 if (data == 2) {
                     toastr.warning("Se ha enviado un nuevo enlace a tu correo", "Verificacion");
                 } else if (data) {
+                    data.img = "/angularjs_fphp/frontend/view/img/user/"+ data.img;
                     localStorage.dataSession = JSON.stringify(data);
                     $rootScope.userProfile = data;
                     toastr.success('Welcome ' + data.user);
@@ -36,18 +37,19 @@ wolfgames.controller('controller_login', function ($scope, $route, $uibModalInst
                     toastr.error("Error: This account doesn't exist.");
                 }
             }, function (error) {
-                console.log(error);
                 toastr.error("Server Error: " + error);
             });
     };
 
     //----------[SOCIAL LOGIN]----------\\
     $scope.googleSign = function () {
-        services_Google.logIn()
+       GoogleServices.login()
+       $scope.closeModal();
     }
 
     $scope.githubSign = function () {
-        services_GitHub.logIn()
+        GitHubServices.login();
+        $scope.closeModal();
     }
 
 });
@@ -70,7 +72,6 @@ wolfgames.controller('controller_register', function ($scope, $uibModalInstance,
     $scope.regName = /^([A-Za-zÀ-ÖØ-öø-ÿ'.]+(?: [A-Za-zÀ-ÖØ-öø-ÿ'.]+){0,2})$/;
 
     $scope.setMatchError = function (pass, pass2) {
-        console.log(pass.$viewValue, pass2.$viewValue)
         if (pass.$viewValue != pass2.$viewValue) {
             pass2.$invalid = true;
             pass2.$error.match = true;

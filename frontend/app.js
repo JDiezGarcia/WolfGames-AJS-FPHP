@@ -176,7 +176,6 @@ wolfgames.config(['$routeProvider', '$locationProvider',
                         }
                         await services.post('log', 'verify_user', data)
                             .then(function (response) {
-                                console.log(response);
                                 if (response.result == 0) {
                                     toastr.success('Thank you for verifing your account.', 'Account verified:');
                                 } else if (response.result == 1) {
@@ -203,53 +202,7 @@ wolfgames.config(['$routeProvider', '$locationProvider',
                         return data;
                     }
                 }
-            })// end_reso
-                /*.when("/contact", {
-                    templateUrl: "frontend/module/contact/view/view_contact.html", 
-                    controller: "controller_contact"
-                }).when("/recover", {
-                    templateUrl: "frontend/module/login/view/view_recover.html",
-                    controller: "controller_recover"
-                }).when("/login/recover/:token", {
-                    templateUrl: "frontend/module/login/view/view_recoverForm.html",
-                    controller: "controller_recoverForm",
-                    resolve: {
-                        checkToken: function(services, $route, toastr) {
-                            services.post('login', 'checkTokenRecover', {'token': $route.current.params.token})
-                            .then(function(response) {
-                                if (response == 'fail') {
-                                    toastr.error("The current token is invalid." ,'Error');
-                                    location.href = "#/home";
-                                }// end_if
-                            }, function(error) {
-                                console.log(error);
-                            });
-                        }// end_checkToken
-                    }// end_resolve
-                }).when("/profile", {
-                    templateUrl: "frontend/module/profile/view/view_profile.html",
-                    controller: "controller_profile",
-                    resolve: {
-                        userData: function (services) {
-                            return services.post('profile', 'sendData', {JWT: localStorage.token});
-                        }, userPurchases: function(services) {
-                            return services.post('profile', 'showPurchases', {JWT: localStorage.token});
-                        }, userFavs: function(services) {
-                            return services.post('profile', 'sendUserFavs', {JWT: localStorage.token});
-                        }// end_userFavs
-                    }// end_resolve
-                }).when("/admin", {
-                    templateUrl: "frontend/module/crud/view/view_crud.html",
-                    controller: "controller_crud",
-                    resolve: {
-                        dataCrud: function(services) {
-                            return services.post('crud', 'listCars');
-                        }
-                    }
-                }).when("/admin/addCar", {
-                    templateUrl: "frontend/module/crud/view/view_crud_addCar.html",
-                    controller: "controller_crud_addCar"
-                })*/.otherwise("/home", {
+            }).otherwise("/home", {
                 templateUrl: "frontend/module/home/view/view_home.html",
                 controller: "controller_home"
             });

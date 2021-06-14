@@ -1,41 +1,53 @@
-wolfgames.factory('SocialServices', ['services', function (services) {
+wolfgames.factory('SocialServices', ['services','CommonService', '$rootScope', 'toastr', function (services, CommonService, $rootScope, toastr) {
 
     let service = {
         initialize: initialize,
-        socialLoginSendData: socialLoginSendData
-
+        sendData: sendData
     };
     return service
 
-    function initialize() {
-        let firebase = services.json("firebase","config.json","/angularjs_fphp/");
-        let firebaseConfig = firebase.values;
-        console.log(firebaseConfig);
-          if (!firebase.apps.length) {
+
+    async function initialize() {
+        let firebaseData = await services.json("firebase", "config.json", "/angularjs_fphp/");
+        let firebaseConfig = firebaseData;
+        if (!firebase.apps.length) {
             firebase.initializeApp(firebaseConfig);
-         }else {
+        } else {
             firebase.app(); // if already initialized, use that one
-         }
+        }
     } // end_initialize
 
-
-
-    function socialLoginSendData(dataUser) {
-
-        console.log("aqui el post",dataUser);
+    function sendData(user) {
+        services.post('log', 'social_login', user)
+        .then(function (data) {
+            if(data.result !=2){
+                if (data.result == 0) {
+                    toastr.success('Welcome to WolfGames ' + data.user);
+    
+                } else if (data.result == 1) {
+                    toastr.success("Welcome again " + data.user);
+                }
+                localStorage.dataSession = JSON.stringify(data);
+                $rootScope.userProfile = data;
+                CommonService.userCart();
+            }else{
+                toastr.warning("The email is already in use");
+            }
+        }, function (error) {
+            toastr.error("Server Error: " + error);
+        });
     }
-
 
 }]);
 
-wolfgames.factory('services_Google', ['SocialServices', function (SocialServices) {
+wolfgames.factory('GoogleServices', ['SocialServices', function (SocialServices) {
     let service = {
-        logIn: logIn
+        login: login
     };
     return service;
 
-    function logIn(getUser) {
-        SocialServices.initialize()
+    async function login() {
+        await SocialServices.initialize()
 
         let provider = new firebase.auth.GoogleAuthProvider();
         provider.addScope('email');
@@ -43,36 +55,44 @@ wolfgames.factory('services_Google', ['SocialServices', function (SocialServices
 
         authService.signInWithPopup(provider)
             .then(function (result) {
-                console.log(result)
-                let dataUser = [("GM-" + result.user.uid), result.user.email, result.user.displayName, result.user.photoURL];
-                SocialServices.socialLoginSendData(dataUser);
-                getUser();
+                result = result.additionalUserInfo.profile;
+                let dataUser = {
+                    userCod: "SOCIAL-GM-" + result.id,
+                    user: "SOCIAL-" + result.email.replace(/[^A-Za-z0-9]/g, ""),
+                    pass: CryptoJS.MD5(result.id).toString(),
+                    email: result.email,
+                    img: result.picture
+                };
+                SocialServices.sendData(dataUser);
             }).catch(function (error) {
-                console.log(error);
             });
     } // end_logIn
 }]); // end_services_Google
 
-wolfgames.factory('services_GitHub', ['SocialServices', function (SocialServices) {
+wolfgames.factory('GitHubServices', ['SocialServices', function (SocialServices) {
     let service = {
-        logIn: logIn
+        login: login
     };
     return service;
 
-    function logIn() {
-        SocialServices.initialize()
+    async function login() {
+        await SocialServices.initialize()
 
         let provider = new firebase.auth.GithubAuthProvider();
-        provider.addScope('email');
+        provider.addScope('user');
         let authService = firebase.auth();
 
         authService.signInWithPopup(provider)
             .then(function (result) {
-                let dataUser = [("GH-" + result.user.uid), result.user.email, result.user.displayName, result.user.photoURL];
-                console.log(result);
-                SocialServices.socialLoginSendData(dataUser);
+                let dataUser = {
+                    userCod: "SOCIAL-GH-" + result.additionalUserInfo.profile.node_id,
+                    email: result.user.email,
+                    user: result.additionalUserInfo.profile.login,
+                    pass: CryptoJS.MD5(result.additionalUserInfo.profile.node_id).toString(),
+                    img: result.additionalUserInfo.profile.avatar_url
+                };
+                SocialServices.sendData(dataUser);
             }).catch(function (error) {
-                console.log(error);
             });
     } // end_logIn
 }]);

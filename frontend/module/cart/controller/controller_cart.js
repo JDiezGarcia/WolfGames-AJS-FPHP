@@ -2,7 +2,6 @@ wolfgames.controller('controller_cart', function ($scope, games, $route, service
 
     //----------[DATA INJECTION]----------\\
     if(games){
-        console.log("a")
         $scope.games = games;
     }else{
         if(localStorage.cartGames){
@@ -90,7 +89,6 @@ wolfgames.controller('controller_cart', function ($scope, games, $route, service
             services.post('cart', 'insert_list', games);
             services.get('cart', 'checkout')
             .then(function (data) {
-                console.log(data)
                 toastr.success('Checkout Successful');
                 delete localStorage.cartGames;
                 $rootScope.cartTotal = 0;

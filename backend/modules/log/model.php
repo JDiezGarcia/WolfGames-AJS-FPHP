@@ -43,4 +43,9 @@ class LogModel extends Model {
         $res = $this->db->query($sql)->query->fetch_all(MYSQLI_ASSOC)[0];
         return $res;
     }
+
+    function select_social_user($userCod,$user,$email,$pass,$img){
+        $res = $this->db->query("CALL insertSocialUser('$userCod','$user','$email', '$pass', '$img')")->query->fetch_all(MYSQLI_ASSOC)[0];
+        return $res;
+    }
 }

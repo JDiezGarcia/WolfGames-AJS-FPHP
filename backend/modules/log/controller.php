@@ -12,6 +12,7 @@ class LogController extends Controller {
         "check_token_post" => array('json', 'token_expiration'),
         "userLog_post" => array('json'),
         "register_post" => array('json'),
+        "social_login_post" => array('json')
         //"action" => array('middleware(jwt,json..)
     );
 
@@ -77,6 +78,26 @@ class LogController extends Controller {
                 'result' => 0
             ];
             res::ok($status);
+        }
+    }
+
+    public function social_login_post($userSocialLog) {
+        $userSocialLog = $this->model->select_social_user(
+            $userSocialLog->userCod,
+            $userSocialLog->user,
+            $userSocialLog->email,
+            $userSocialLog->pass,
+            $userSocialLog->img
+        );
+
+        if ($userSocialLog['result'] != 2) {
+            $this->generate_session_token($userSocialLog['userCod']);
+            res::ok($userSocialLog);
+        }else{
+            $result = array(
+                'result' => 2
+            );
+            res::ok($result);
         }
     }
 

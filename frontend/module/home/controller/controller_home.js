@@ -1,6 +1,4 @@
 wolfgames.controller('controller_home', function($scope, services, allPlatforms, viewedGames) {
-    
-
     //-----------[LOCAL STORAGE]-----------\\
     localStorage.carouselOffset = 0;
 
@@ -46,7 +44,6 @@ wolfgames.controller('controller_home', function($scope, services, allPlatforms,
         .then(function(games) {
             $scope.slides = games.games;
         }, function(error) {
-            console.log(error);
         });// end_services
 
     };

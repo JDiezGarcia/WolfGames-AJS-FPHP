@@ -28,7 +28,6 @@ wolfgames.factory("services", ['$http', '$q', function ($http, $q) {
             dataType: 'json',
             contentType: "application/json"
         }).success(function (data) {
-            console.log(data[key])
             defered.resolve(data[key]);
         }).error(function (data) {
             defered.reject(data.error);
@@ -74,7 +73,6 @@ wolfgames.factory("services", ['$http', '$q', function ($http, $q) {
             method: 'DELETE',
             url: serviceBase + module + '&op=' + functi + '&param=' + dada
         }).success(function (data, status, headers, config) {
-            //console.log(data);
             defered.resolve(data);
         }).error(function (data, status, headers, config) {
             defered.reject(data);

@@ -101,9 +101,14 @@
                             </i>
                         </span>
                         <span>
-                            <div ng-show="userProfile != null" class="{{userProfile.user}}" id="login-icon"><img style="max-width: 30px;"
-                                    src="/angularjs_fphp/frontend/view/img/user/{{userProfile.img}}" /><span> {{userProfile.user}}</span>
+                            <div ng-show="userProfile != null && userProfile.social != 1" class="{{userProfile.user}}" id="login-icon">
+                                <img style="max-width: 30px;" src="{{userProfile.img}}" />
+                                <span> {{userProfile.user}}</span>
                             </div>
+                            <div ng-show="userProfile != null && userProfile.social == 1" class="{{userProfile.user}}" id="login-icon">
+                                <img style="max-width: 30px;" src="{{userProfile.img}}"/>
+                                <span>{{userProfile.user}}</span>
+                        </div>
                         </span>
                     </button>
     

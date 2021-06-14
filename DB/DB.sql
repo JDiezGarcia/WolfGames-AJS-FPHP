@@ -324,3 +324,33 @@ BEGIN
 	END IF;
 END$$
 DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE `insertSocialUser`(`userCod` VARCHAR(100) `user` VARCHAR(100), `email` VARCHAR(100), `pass` VARCHAR(100),`img` VARCHAR(255))
+BEGIN
+	IF NOT EXISTS(SELECT * FROM users AS u WHERE u.useCod = userCod ) THEN
+        INSERT INTO `users` (`userCod`,`user`, `email`, `pass`, `img`)
+        VALUES (userCod,user, email, pass, img);
+        SELECT u.userCod, u.user, u.email, u.img, 1 as social FROM users AS u WHERE u.useCod = userCod; 
+    ELSE
+    	SELECT u.userCod, u.user, u.email, u.img, 1 as social FROM users AS u WHERE u.useCod = userCod;
+	END IF;
+
+
+DELIMITER //
+CREATE PROCEDURE `insertSocialUser`(
+    IN `userCod` VARCHAR(100),
+    IN `user` VARCHAR(100), 
+    IN `email` VARCHAR(100), 
+    IN `pass` VARCHAR(100),
+    IN `img` VARCHAR(255)
+    )
+BEGIN
+	IF NOT EXISTS(SELECT * FROM users AS u WHERE u.useCod = userCod ) THEN
+        INSERT INTO `users` (`userCod`,`user`, `email`, `pass`, `img`)
+        VALUES (userCod,user, email, pass, img);
+        SELECT u.userCod, u.user, u.email, u.img, 1 as social FROM users AS u WHERE u.useCod = userCod; 
+    ELSE
+    	SELECT u.userCod, u.user, u.email, u.img, 1 as social FROM users AS u WHERE u.useCod = userCod;
+	END IF;
+END //
