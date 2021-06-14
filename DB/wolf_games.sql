@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 08-06-2021 a las 21:34:24
+-- Tiempo de generación: 15-06-2021 a las 01:14:52
 -- Versión del servidor: 10.3.27-MariaDB-0+deb10u1
 -- Versión de PHP: 7.3.27-1~deb10u1
 
@@ -44,7 +44,25 @@ CREATE DEFINER=`javier`@`%` PROCEDURE `checkOut` (IN `user` VARCHAR(100))  BEGIN
     SELECT * FROM order_header WHERE userCod = user AND idOrder = orderCod ;
 END$$
 
-CREATE DEFINER=`javier`@`%` PROCEDURE `retrieveOrder` (IN `orderCod` INT)  BEGIN			    
+CREATE DEFINER=`javier`@`%` PROCEDURE `insertSocialUser` (IN `userCod` VARCHAR(100), IN `user` VARCHAR(100), IN `email` VARCHAR(100), IN `pass` VARCHAR(100), IN `img` VARCHAR(255))  BEGIN
+	IF NOT EXISTS(SELECT * FROM users AS u WHERE u.userCod = userCod ) THEN
+        INSERT INTO `users` (`userCod`,`user`, `email`, `pass`, `img`)
+        VALUES (userCod,user, email, pass, img);
+        SELECT 0 as result, u.userCod, u.user, u.email, u.img, 1 as social FROM users AS u WHERE u.userCod = userCod; 
+    ELSE
+    	SELECT 1 as result, u.userCod, u.user, u.email, u.img, 1 as social FROM users AS u WHERE u.userCod = userCod;
+	END IF;
+END$$
+
+CREATE DEFINER=`javier`@`%` PROCEDURE `recover` (IN `userV` VARCHAR(100))  BEGIN			    
+    IF EXISTS(SELECT * FROM users WHERE email = userV OR user = userV AND userCod LIKE 'LOCAL%')THEN
+        SELECT 0 AS result, u.user, u.email FROM users AS u WHERE u.email = userV OR u.user = userV;
+    ELSE
+        SELECT 1 AS result;
+    END IF;
+END$$
+
+CREATE DEFINER=`javier`@`%` PROCEDURE `retrieveOrder` (IN `orderCod` INT)  BEGIN
     SELECT ol.gameCod, g.price, ol.quantity, g.gameName, g.gameImg FROM order_lines ol INNER JOIN games g ON g.gameCod = ol.gameCod WHERE idOrder = orderCod;
 END$$
 
@@ -66,6 +84,15 @@ END$$
 --
 -- Funciones
 --
+CREATE DEFINER=`javier`@`%` FUNCTION `changePass` (`userC` VARCHAR(50), `passC` VARCHAR(50)) RETURNS INT(1) BEGIN
+	IF EXISTS(SELECT * FROM users AS u WHERE u.email = userC OR u.user = userC) THEN
+        UPDATE `users` SET pass = passC WHERE `user` = userC OR email = userC;
+        RETURN 0;
+    ELSE
+        RETURN 1;
+	END IF;
+END$$
+
 CREATE DEFINER=`javier`@`%` FUNCTION `favsActions` (`user` VARCHAR(100), `game` VARCHAR(50)) RETURNS TINYINT(1) BEGIN
    	IF NOT EXISTS( SELECT * FROM games_favs AS gf WHERE gf.userCod = user AND gf.gameCod = game ) THEN
         INSERT INTO `games_favs` (`userCod`, `gameCod`) VALUES (user, game);
@@ -86,6 +113,17 @@ CREATE DEFINER=`javier`@`%` FUNCTION `insertUser` (`user` VARCHAR(50), `email` V
     ELSE
     	RETURN 1;
 	END IF;
+END$$
+
+CREATE DEFINER=`javier`@`%` FUNCTION `verify` (`userV` VARCHAR(50)) RETURNS INT(1) BEGIN
+        IF EXISTS(SELECT * FROM users AS u WHERE u.email = userV OR u.user = userV AND u.verify = 0 ) THEN
+            UPDATE `users` SET `verify` = 1 WHERE `user` = userV OR email = userV;
+            RETURN 0;
+        ELSEIF EXISTS(SELECT * FROM users AS u WHERE u.email = user OR u.user = userV AND u.verify = 1 ) THEN
+            RETURN 1;
+        ELSE
+          RETURN 2;
+        END IF;
 END$$
 
 DELIMITER ;
@@ -142,19 +180,19 @@ CREATE TABLE `games` (
 --
 
 INSERT INTO `games` (`gameCod`, `gameName`, `relDate`, `price`, `type`, `pgi`, `description`, `gameImg`, `views`) VALUES
-('CRA-004', 'Crash Bandicoot 4: Its About Time', '18/04/2021', 69.99, 'Game', 13, 'crashbandicoot4-desc', 'crashbandicoot4-cover.jpg', 350),
-('DEC-001', 'Dead Cells', '12/12/2018', 44.99, 'Game', 16, 'deadcells-des', 'deadcells-cover.jpg', 136),
-('GOT-001', 'Gothic', '10/10/1999', 44.99, 'Game', 16, 'gothic-des', 'gothic-cover.jpg', 91),
-('GOT-002', 'Gothic 2', '09/04/2004', 49.99, 'Game', 16, 'gothic2-des', 'gothic2-cover.jpg', 27),
+('CRA-004', 'Crash Bandicoot 4: Its About Time', '18/04/2021', 69.99, 'Game', 13, 'crashbandicoot4-desc', 'crashbandicoot4-cover.jpg', 356),
+('DEC-001', 'Dead Cells', '12/12/2018', 44.99, 'Game', 16, 'deadcells-des', 'deadcells-cover.jpg', 157),
+('GOT-001', 'Gothic', '10/10/1999', 44.99, 'Game', 16, 'gothic-des', 'gothic-cover.jpg', 93),
+('GOT-002', 'Gothic 2', '09/04/2004', 49.99, 'Game', 16, 'gothic2-des', 'gothic2-cover.jpg', 29),
 ('GOT-003', 'Gothic 3', '10/10/1999', 44.99, 'Game', 16, 'gothic3-des', 'gothic3-cover.jpg', 25),
-('HAL-005', 'HALO 5: Guardians', '03/09/2017', 69.99, 'Game', 16, 'halo5-des', 'halo5guardians-cover.jpg', 54),
+('HAL-005', 'HALO 5: Guardians', '03/09/2017', 69.99, 'Game', 16, 'halo5-des', 'halo5guardians-cover.jpg', 56),
 ('HOK-001', 'Hollow Knight', '09/04/2014', 49.99, 'Game', 16, 'hollowknight-des', 'hollowknight-cover.jpg', 15),
 ('THW-001', 'The Witcher', '05/03/2001', 59.99, 'Game', 16, 'thewitcher-des', 'thewitcher-cover.jpg', 5),
-('THW-002', 'The Witcher 2: Assassins of Kings', '05/03/2006', 59.99, 'Game', 18, 'thewitcher2-des', 'thewitcher2-cover.jpg', 6),
+('THW-002', 'The Witcher 2: Assassins of Kings', '05/03/2006', 59.99, 'Game', 18, 'thewitcher2-des', 'thewitcher2-cover.jpg', 24),
 ('THW-003', 'The Witcher 3: Wild Hunt', '12/06/2014', 59.99, 'Game', 18, 'thewitcher3-des', 'thewitcher3-cover.jpg', 10),
 ('TLU-001', 'The Last of Us', '12/06/2010', 59.99, 'Game', 18, 'thelastofus-des', 'thelastofus-cover.jpg', 25),
 ('TLU-002', 'The Last of Us 2', '12/06/2010', 69.99, 'Game', 18, 'thelastofus2-des', 'thelastofus2-cover.jpg', 14),
-('ZEB-001', 'Zelda: Breath of the Wild', '12/01/2018', 44.99, 'Game', 16, 'zeldabreathofthewild-des', 'zeldabreathofthewild-cover.jpg', 8);
+('ZEB-001', 'Zelda: Breath of the Wild', '12/01/2018', 44.99, 'Game', 16, 'zeldabreathofthewild-des', 'zeldabreathofthewild-cover.jpg', 9);
 
 -- --------------------------------------------------------
 
@@ -173,7 +211,9 @@ CREATE TABLE `games_favs` (
 --
 
 INSERT INTO `games_favs` (`ID`, `userCod`, `gameCod`) VALUES
-(204, 'LOCAL-xavier', 'CRA-004'),
+(208, 'LOCAL-sergio', 'DEC-001'),
+(210, 'LOCAL-sergio', 'HOK-001'),
+(214, 'LOCAL-xavier', 'CRA-004'),
 (80, 'LOCAL-xavier', 'THW-001'),
 (205, 'LOCAL-xavier', 'THW-003'),
 (104, 'LOCAL-xavier', 'TLU-001'),
@@ -300,7 +340,14 @@ CREATE TABLE `order_header` (
 --
 
 INSERT INTO `order_header` (`idOrder`, `userCod`, `status`, `orderDate`, `total`) VALUES
-(1, 'LOCAL-xavier', 'F', '2021-06-08 19:32:23', 344.94);
+(1, 'LOCAL-xavier', 'F', '2021-06-10 14:42:27', 719.84),
+(9, 'LOCAL-xavier', 'F', '2021-06-10 14:55:36', 719.84),
+(10, 'LOCAL-xavier', 'F', '2021-06-10 14:58:36', 409.92),
+(12, 'LOCAL-xavier', 'F', '2021-06-11 10:05:25', 1794.69),
+(13, 'LOCAL-xavier', 'P', NULL, 0),
+(140, 'LOCAL-wolfsarter', 'P', NULL, 0),
+(141, 'SOCIAL-GM-104560663513977110443', 'P', NULL, 0),
+(142, 'SOCIAL-GH-MDQ6VXNlcjg1OTA5MTI1', 'P', NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -321,9 +368,19 @@ CREATE TABLE `order_lines` (
 --
 
 INSERT INTO `order_lines` (`idLine`, `idOrder`, `gameCod`, `price`, `quantity`) VALUES
-(7, 1, 'CRA-004', 69.99, 3),
-(8, 1, 'GOT-001', 44.99, 2),
-(9, 1, 'GOT-003', 44.99, 1);
+(13, 1, 'GOT-001', 44.99, 10),
+(14, 1, 'GOT-003', 44.99, 3),
+(15, 1, 'DEC-001', 44.99, 3),
+(16, 9, 'GOT-001', 44.99, 10),
+(17, 9, 'GOT-003', 44.99, 3),
+(18, 9, 'DEC-001', 44.99, 3),
+(19, 10, 'CRA-004', 69.99, 2),
+(20, 10, 'DEC-001', 44.99, 5),
+(21, 10, 'GOT-001', 44.99, 1),
+(453, 12, 'CRA-004', 69.99, 16),
+(454, 12, 'GOT-001', 44.99, 4),
+(455, 12, 'GOT-003', 44.99, 3),
+(456, 12, 'DEC-001', 44.99, 8);
 
 -- --------------------------------------------------------
 
@@ -385,18 +442,18 @@ INSERT INTO `shops` (`shopCod`, `shopName`, `shopDesc`, `shopLat`, `shopLon`, `s
 
 CREATE TABLE `users` (
   `userCod` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
-  `user` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
+  `user` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
   `email` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
   `pass` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
   `verify` bit(1) NOT NULL DEFAULT b'0',
-  `name` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
-  `lastname` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
+  `name` varchar(50) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `lastname` varchar(50) COLLATE utf8_spanish_ci DEFAULT NULL,
   `dir` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
-  `postcode` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
-  `city` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
-  `country` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
-  `sex` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
-  `birthdate` varchar(10) COLLATE utf8_spanish_ci NOT NULL,
+  `postcode` varchar(50) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `city` varchar(50) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `country` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `sex` varchar(20) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `birthdate` varchar(10) COLLATE utf8_spanish_ci DEFAULT NULL,
   `img` varchar(255) COLLATE utf8_spanish_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
@@ -405,7 +462,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`userCod`, `user`, `email`, `pass`, `verify`, `name`, `lastname`, `dir`, `postcode`, `city`, `country`, `sex`, `birthdate`, `img`) VALUES
-('LOCAL-anca', 'anca', 'a@b.com', 'cc6ef3b68906e0b55d60736579e2a51f', b'0', 'ang', 'aa', 'C/San Pedro 12, Puerta 3', '46000', 'Agullen', 'España', 'Hombre', '19/07/1993', 'user-1.jpg'),
+('LOCAL-anca', 'anca', 'a@b.com', 'cc6ef3b68906e0b55d60736579e2a51f', b'1', 'ang', 'aa', 'C/San Pedro 12, Puerta 3', '46000', 'Agullen', 'España', 'Hombre', '19/07/1993', 'user-1.jpg'),
 ('LOCAL-anco', 'anco', 'b@a.com', 'cc6ef3b68906e0b55d60736579e2a51f', b'0', 'ang', 'a', 'C/San Pedro 12, Puerta 3', '46000', 'Agullen', 'España', 'Hombre', '19/07/1993', 'user-2.jpg'),
 ('LOCAL-ancoca', 'ancoca', 'a@b.con', 'cc6ef3b68906e0b55d60736579e2a51f', b'0', 'angel', 'aa', 'C/San Pedro 12, Puerta 3', '46000', 'Agullent', 'España', 'Hombre', '19/07/1993', 'user-12.jpg'),
 ('LOCAL-ancoca33', 'ancoca33', 'a@b.cox', 'cc6ef3b68906e0b55d60736579e2a51f', b'0', 'angel', 'a', 'C/San Pedro 12, Puerta 3', '46000', 'Agullent', 'España', 'Hombre', '19/07/1993', 'user-11.jpg'),
@@ -422,10 +479,14 @@ INSERT INTO `users` (`userCod`, `user`, `email`, `pass`, `verify`, `name`, `last
 ('LOCAL-luis', 'luis', 'a@b.co0', 'cc6ef3b68906e0b55d60736579e2a51f', b'0', 'usuario', 'a', 'C/San Pedro 12, Puerta 3', '46000', 'Agullent', 'España', 'Hombre', '16/05/1980', 'user-5.jpg'),
 ('LOCAL-Manuel', 'Manuel', 'a@b.col', 'cc6ef3b68906e0b55d60736579e2a51f', b'0', 'usuario', 'a', 'C/San Pedro 12, Puerta 3', '46000', 'Agullent', 'España', 'Hombre', '16/05/1980', 'user-1.jpg'),
 ('LOCAL-pedroo', 'pedroo', 'wolfsater@gmail.co', 'aa68f70d4a3cb632d2576e30956acba4', b'0', 'Javier', 'Garcia', 'C/San Ramón 14, piso 3, puerta 6', '46890', 'Agullent', 'España', 'Male', '1993/12/12', 'user-13.jpg'),
+('LOCAL-sergio', 'sergio', 'sergi@g.com', '403a9e9a804196b3aaf53b6320a4e37b', b'0', 'Xavier', 'Diez', 'C/San Ramón 14, piso 3, p', '46890', 'Agullent', 'España', 'Female', '1994/12/12', 'user-1.jpg'),
 ('LOCAL-wolf', 'wolf', 'a@b.cob', 'cc6ef3b68906e0b55d60736579e2a51f', b'0', 'usuario', 'a', 'C/San Pedro 12, Puerta 3', '46000', 'Agullent', 'Francia', 'Mujer', '16/05/1980', 'user-9.jpg'),
+('LOCAL-wolfsarter', 'wolfsarter', 'wolfsarter@gmail.com', '5919d593c0e526808e4d9ff1e7d81f4f', b'1', 'Javier', 'Garcia', 'C/San Ramón 14, piso 3, puerta 6', '46890', 'Agullent', 'España', 'Male', '2021/06/01', 'user-4.jpg'),
 ('LOCAL-wolsarr', 'wolfsarr', 'wolfsartr@gmail.com', '214fb33f3f0df573a19ad3a734c4076a', b'0', 'Javier', 'Garcia', 'C/San Ramón 14, piso 3, puerta 6', '46890', 'Agullent', 'España', 'Male', '1994/12/12', 'user-9.jpg'),
-('LOCAL-xavier', 'xavier', 'wolfsarter@gmail.com', '403a9e9a804196b3aaf53b6320a4e37b', b'0', 'Javier', 'Garcia', 'C/San Ramón 14, piso 3, puerta 6', '46890', 'Agullent', 'España', 'Male', '1994/12/12', 'user-11.jpg'),
-('LOCAL-xavo', 'xavo', 'kevin@vll.com', '403a9e9a804196b3aaf53b6320a4e37b', b'0', 'Kevin', 'Kamos', 'C/ Alberto KA', '465465', 'Onteniente', 'Spain', 'Male', '1994/12/11', 'user-2.jpg');
+('LOCAL-xavier', 'xavier', 'wolfarter@gmail.com', '403a9e9a804196b3aaf53b6320a4e37b', b'0', 'Javier', 'Garcia', 'C/San Ramón 14, piso 3, puerta 6', '46890', 'Agullent', 'España', 'Male', '1994/12/12', 'user-11.jpg'),
+('LOCAL-xavo', 'xavo', 'kevin@vll.com', '403a9e9a804196b3aaf53b6320a4e37b', b'0', 'Kevin', 'Kamos', 'C/ Alberto KA', '465465', 'Onteniente', 'Spain', 'Male', '1994/12/11', 'user-2.jpg'),
+('SOCIAL-GH-MDQ6VXNlcjg1OTA5MTI1', 'FcoJavierDiezGarcia', 'jdiez.estacio@gmail.com', '671840f34c868c86bb647897dde05af1', b'0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'https://avatars.githubusercontent.com/u/85909125?v=4'),
+('SOCIAL-GM-104560663513977110443', 'SOCIAL-fcojavierdiezgarciagmailcom', 'fco.javier.diez.garcia@gmail.com', '9e96e68cd73a349d1eb0dbdc6346ed6b', b'0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'https://lh3.googleusercontent.com/a/AATXAJyEFJdwnbKGKfo-aidac2k5b08EKMEaN5f_Zbeq=s96-c');
 
 --
 -- Índices para tablas volcadas
@@ -519,7 +580,7 @@ ALTER TABLE `gameGenre`
 -- AUTO_INCREMENT de la tabla `games_favs`
 --
 ALTER TABLE `games_favs`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=207;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=215;
 
 --
 -- AUTO_INCREMENT de la tabla `games_gameGenre`
@@ -537,13 +598,13 @@ ALTER TABLE `games_platforms`
 -- AUTO_INCREMENT de la tabla `order_header`
 --
 ALTER TABLE `order_header`
-  MODIFY `idOrder` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idOrder` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=143;
 
 --
 -- AUTO_INCREMENT de la tabla `order_lines`
 --
 ALTER TABLE `order_lines`
-  MODIFY `idLine` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `idLine` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=482;
 
 --
 -- AUTO_INCREMENT de la tabla `shops`
