@@ -6,7 +6,7 @@ class UserLog {
     public $password;
     
     public function validate() {
-        if (strlen($this->username) > 20) {
+        if (strlen($this->username) > 50) {
             throw new BadReqException('Username too Long');
         }
         if (strlen($this->password) != 32) {

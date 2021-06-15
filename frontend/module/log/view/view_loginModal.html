@@ -16,7 +16,7 @@
                         <i class="fa fa-user input-group-text"></i>
                     </div>
                     <input type="user" class="form-control" ng-model="user" placeholder="Username/email@email.com"
-                        name="user" ng-minlength="4" ng-maxlength="20" ng-pattern="regUser" required
+                        name="user" ng-minlength="4" ng-maxlength="50" ng-pattern="regUser" required
                         ng-class="{'invalid-input': loginForm.user.$dirty && loginForm.user.$invalid }">
                 </div>
                 <!--VALIDATION-->
@@ -25,7 +25,7 @@
                     <p ng-message="required">This field is required</p>
                     <p ng-message="pattern">The field is invalid need to be a user or email</p>
                     <p ng-message="minlength">This field needs to be min 4 characters</p>
-                    <p ng-message="maxlength">This field need to be max 20 characters</p>
+                    <p ng-message="maxlength">This field need to be max 50 characters</p>
                 </div>
             </div>
             <!--PASSWORD-->
